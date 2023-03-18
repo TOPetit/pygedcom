@@ -30,3 +30,4 @@ class GedcomParser():
                     return {"status": "error", "message": "Invalid level on line " + str(current_line) + ": " + line}
                 current_level = parsed_line["level"]
         return {"status": "ok", "message": ""}
+    
