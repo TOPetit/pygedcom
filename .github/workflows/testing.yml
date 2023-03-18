@@ -25,10 +25,11 @@ jobs:
         run: |
           pytest --html=build/index.html --self-contained-html
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload GitHub Pages artifact
+        if: always()
+        uses: actions/upload-pages-artifact@v1.0.5
         with:
-          name: github-pages
-          path: build
+          path: build/
 
   deploy:
     needs: test
@@ -43,6 +44,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy GitHub Pages site
+        if: always()
         id: deployment
-        uses: actions/deploy-pages@master
+        uses: actions/deploy-pages@v1.2.2
