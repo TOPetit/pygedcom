@@ -6,8 +6,8 @@ def test_parse_00():
     result = parser.parse()
     assert len(result["individuals"]) == 1
     assert result["individuals"][0].get_name() == "John /Doe/"
-    assert str(result["individuals"][0].get_date_of_birth()) == "1 JAN 1900"
-    assert str(result["individuals"][0].get_date_of_death()) == "1 JAN 1970"
+    assert str(result["individuals"][0].get_date_of_birth()) == "01 JAN 1900"
+    assert str(result["individuals"][0].get_date_of_death()) == "01 JAN 1970"
 
 
 def test_parse_01():

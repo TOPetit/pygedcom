@@ -19,7 +19,7 @@ class GedcomIndividual(GedcomElement):
                 self.find_sub_element("DEAT")[0].find_sub_element("DATE")[0]
             )
         else:
-            return None
+            return ""
 
     def __find_date_of_birth(self) -> GedcomDate:
         if (
@@ -30,7 +30,7 @@ class GedcomIndividual(GedcomElement):
                 self.find_sub_element("BIRT")[0].find_sub_element("DATE")[0]
             )
         else:
-            return None
+            return ""
 
     def get_name(self) -> str:
         return self.__name
@@ -40,3 +40,20 @@ class GedcomIndividual(GedcomElement):
 
     def get_date_of_death(self) -> GedcomDate:
         return self.__date_of_death
+
+    def get_xref(self) -> str:
+        return self.__xref
+
+    def get_parents(self) -> list:
+        # TODO: Implement
+        return []
+
+    def get_children(self) -> list:
+        # TODO: Implement
+        return []
+
+    def get_first_name(self) -> str:
+        return self.__name.split("/")[0].split(" ")[0].strip()
+
+    def get_last_name(self) -> str:
+        return self.__name.split("/")[-2].strip()

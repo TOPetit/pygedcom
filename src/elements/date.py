@@ -1,78 +1,69 @@
+import re
 from .element import GedcomElement
 
 
 class GedcomDate:
-    months = [
-        "JAN",
-        "FEB",
-        "MAR",
-        "APR",
-        "MAY",
-        "JUN",
-        "JUL",
-        "AUG",
-        "SEP",
-        "OCT",
-        "NOV",
-        "DEC",
-    ]
-    date_tags = ["ABT", "AFT", "BEF", "CAL", "EST", "INT"]
-
     def __init__(self, element: GedcomElement):
         self.__value = element.value
-        split = self.__value.split(" ")
-        self.__year = None
-        self.__month = None
-        self.__day = None
-        self.__tag = None
-        if len(split) == 1:
-            # Only year
-            self.__year = int(split[0])
-        elif len(split) == 2:
-            if split[0] in self.months:
-                # MONTH YEAR
-                self.__month = split[0]
-                self.__year = int(split[1])
-            else:
-                # TAG YEAR
-                self.__tag = split[0]
-                self.__year = int(split[1])
-        elif len(split) == 3:
-            if split[0] in self.date_tags:
-                # TAG MONTH YEAR
-                self.__tag = split[0]
-                self.__month = split[1]
-                self.__year = int(split[2])
-            else:
-                # DAY MONTH YEAR
-                self.__day = int(split[0])
-                self.__month = split[1]
-                self.__year = int(split[2])
-        elif len(split) == 4:
-            # TAG DAY MONTH YEAR
-            self.__tag = split[0]
-            self.__day = int(split[1])
-            self.__month = split[2]
-            self.__year = int(split[3])
+        self.__day, self.__month, self.__year = self.__parse_value()
 
-    def get_year(self) -> int:
-        return self.__year
+    def __parse_value(self) -> tuple:
+        if self.__value == "":
+            return None, None, None
+        if self.__value.startswith("ABT"):
+            return self.__parse_date(self.__value[4:])
+        if self.__value.startswith("BEF"):
+            return self.__parse_date(self.__value[4:])
+        if self.__value.startswith("AFT"):
+            return self.__parse_date(self.__value[4:])
+        if self.__value.startswith("CAL"):
+            return self.__parse_date(self.__value[4:])
+        if self.__value.startswith("EST"):
+            return self.__parse_date(self.__value[4:])
+        if self.__value.startswith("INT"):
+            return self.__parse_date(self.__value[4:])
+        if self.__value.startswith("TO"):
+            return self.__parse_date(self.__value[3:])
+        if self.__value.startswith("FROM"):
+            # TODO Implement 2 dates format
+            return None, None, None
+        if self.__value.startswith("BET"):
+            # TODO Implement 2 dates format
+            return None, None, None
+        # TODO Implement 2 dates format with OR
+        else:
+            return self.__parse_date(self.__value)
 
-    def get_day(self) -> int:
-        return self.__day
+    def __parse_date(self, date_string: str) -> tuple:
+        day = month = year = None
+        date_string = date_string.strip()
 
-    def get_month(self) -> int:
-        return self.__month
+        # Match DD MMM YYYY format
+        match = re.match(r"^(\d{1,2}) ([A-Z]{3}) (\d{4})$", date_string)
+        if match:
+            day, month, year = match.groups()
+            month = month.upper()
 
-    def get_tag(self) -> str:
-        return self.__tag
+        # Match MMM YYYY format
+        if not match:
+            match = re.match(r"^([A-Z]{3}) (\d{4})$", date_string)
+            if match:
+                month, year = match.groups()
+
+        # Match YYYY format
+        if not match:
+            match = re.match(r"^(\d{4})$", date_string)
+            if match:
+                (year,) = match.groups()
+
+        return day, month, year
 
     def __str__(self):
-        result = []
+        results = []
         if self.__day:
-            result.append(str(self.__day))
+            results.append(self.__day)
         if self.__month:
-            result.append(self.__month)
+            results.append(self.__month)
         if self.__year:
-            result.append(str(self.__year))
-        return " ".join(result)
+            results.append(self.__year)
+        return " ".join(results) if results != [] else ""
