@@ -6,8 +6,7 @@ from .elements.repository import GedcomRepository
 from .elements.source import GedcomSource
 
 
-class GedcomParser():
-
+class GedcomParser:
     def __init__(self, path: str):
         self.path = path
 
@@ -15,24 +14,18 @@ class GedcomParser():
         with open(self.path, "r") as file:
             data = file.read()
         return data
-    
+
     def __parse_line(self, line: str) -> dict:
-        chars = line.split(' ')
-        level = int(chars[0])
-        tag = chars[1]
-        value = ' '.join(chars[2:]) if len(chars) > 2 else ""
-        return {"level": level, "tag": tag, "value": value}
-    
-    def __parse_lowlevel_line(self, line: str) -> dict:
-        chars = line.split(' ')
-        level = int(chars[0])
-        value = chars[1]
-        tag = chars[2] if len(chars) > 2 else ""
-        return {"level": level, "tag": tag, "value": value}
+        chars = line.split(" ")
+        level = int(chars.pop(0))
+        xref = chars.pop(0) if chars[0].startswith("@") else None
+        tag = chars.pop(0)
+        value = " ".join(chars) if chars != [] else ""
+        return {"level": level, "xref": xref, "tag": tag, "value": value}
 
     def verify(self) -> dict:
         file = self.__open()
-        lines = file.split('\n')
+        lines = file.split("\n")
         current_level = 0
         current_line = 0
         for line in lines:
@@ -41,10 +34,69 @@ class GedcomParser():
                 # Check if the level is valid
                 parsed_line = self.__parse_line(line)
                 if parsed_line["level"] > current_level + 1:
-                    return {"status": "error", "message": "Invalid level on line " + str(current_line) + ": " + line}
+                    return {
+                        "status": "error",
+                        "message": "Invalid level on line "
+                        + str(current_line)
+                        + ": "
+                        + line,
+                    }
                 current_level = parsed_line["level"]
         return {"status": "ok", "message": ""}
-    
+
+    def create_element(self, parsed_line: dict, element_lines: list) -> object:
+        if parsed_line["tag"] == "INDI":
+            self.individuals.append(
+                GedcomIndividual(
+                    parsed_line["level"],
+                    parsed_line["tag"],
+                    element_lines,
+                    xref=parsed_line["xref"],
+                )
+            )
+        elif parsed_line["tag"] == "FAM":
+            self.families.append(
+                GedcomFamily(
+                    parsed_line["level"],
+                    parsed_line["tag"],
+                    element_lines,
+                    xref=parsed_line["xref"],
+                )
+            )
+        elif parsed_line["tag"] == "HEAD":
+            self.head = GedcomHead(
+                parsed_line["level"],
+                parsed_line["tag"],
+                element_lines,
+            )
+        elif parsed_line["tag"] == "SOUR":
+            self.sources.append(
+                GedcomSource(
+                    parsed_line["level"],
+                    parsed_line["tag"],
+                    element_lines,
+                    xref=parsed_line["xref"],
+                )
+            )
+        elif parsed_line["tag"] == "REPO":
+            self.repositories.append(
+                GedcomRepository(
+                    parsed_line["level"],
+                    parsed_line["tag"],
+                    element_lines,
+                    xref=parsed_line["xref"],
+                )
+            )
+        elif parsed_line["tag"] == "OBJE":
+            self.objects.append(
+                GedcomObject(
+                    parsed_line["level"],
+                    parsed_line["tag"],
+                    element_lines,
+                    xref=parsed_line["xref"],
+                )
+            )
+
     def parse(self) -> None:
         self.head = None
         self.individuals = []
@@ -53,39 +105,17 @@ class GedcomParser():
         self.objects = []
         self.repositories = []
         file = self.__open()
-        lines = file.split('\n')
-        current_parsed_line = self.__parse_lowlevel_line(lines[0])
+        lines = file.split("\n")
+        current_parsed_line = self.__parse_line(lines[0])
         element_lines = []
         if lines != []:
             for line in lines[1:]:
                 if line != "":
-                    tmp_parsed_line = self.__parse_lowlevel_line(line)
+                    tmp_parsed_line = self.__parse_line(line)
                     if tmp_parsed_line["level"] > 0:
                         element_lines.append(line)
                     else:
-                        if current_parsed_line["tag"] == "INDI":
-                            self.individuals.append(GedcomIndividual(current_parsed_line["level"], current_parsed_line["tag"], current_parsed_line["value"], element_lines))
-                        elif current_parsed_line["tag"] == "FAM":
-                            self.families.append(GedcomFamily(current_parsed_line["level"], current_parsed_line["tag"], current_parsed_line["value"], element_lines))
-                        elif current_parsed_line["tag"] == "HEAD":
-                            self.head = GedcomHead(current_parsed_line["level"], current_parsed_line["tag"], current_parsed_line["value"], element_lines)
-                        elif current_parsed_line["tag"] == "SOUR":
-                            self.sources.append(GedcomSource(current_parsed_line["level"], current_parsed_line["tag"], current_parsed_line["value"], element_lines))
-                        elif current_parsed_line["tag"] == "REPO":
-                            self.repositories.append(GedcomRepository(current_parsed_line["level"], current_parsed_line["tag"], current_parsed_line["value"], element_lines))
-                        elif current_parsed_line["tag"] == "OBJE":
-                            self.objects.append(GedcomObject(current_parsed_line["level"], current_parsed_line["tag"], current_parsed_line["value"], element_lines))
+                        self.create_element(current_parsed_line, element_lines)
                         current_parsed_line = tmp_parsed_line
                         element_lines = []
-            if current_parsed_line["tag"] == "INDI":
-                self.individuals.append(GedcomIndividual(current_parsed_line["level"], current_parsed_line["tag"], current_parsed_line["value"], element_lines))
-            elif current_parsed_line["tag"] == "FAM":
-                self.families.append(GedcomFamily(current_parsed_line["level"], current_parsed_line["tag"], current_parsed_line["value"], element_lines))
-            elif current_parsed_line["tag"] == "HEAD":
-                self.head = GedcomHead(current_parsed_line["level"], current_parsed_line["tag"], current_parsed_line["value"], element_lines)
-            elif current_parsed_line["tag"] == "SOUR":
-                self.sources.append(GedcomSource(current_parsed_line["level"], current_parsed_line["tag"], current_parsed_line["value"], element_lines))
-            elif current_parsed_line["tag"] == "REPO":
-                self.repositories.append(GedcomRepository(current_parsed_line["level"], current_parsed_line["tag"], current_parsed_line["value"], element_lines))
-            elif current_parsed_line["tag"] == "OBJE":
-                self.objects.append(GedcomObject(current_parsed_line["level"], current_parsed_line["tag"], current_parsed_line["value"], element_lines))
+            self.create_element(current_parsed_line, element_lines)
