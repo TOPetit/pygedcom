@@ -9,6 +9,12 @@ from .elements.source import GedcomSource
 class GedcomParser:
     def __init__(self, path: str):
         self.path = path
+        self.head = None
+        self.individuals = []
+        self.families = []
+        self.sources = []
+        self.objects = []
+        self.repositories = []
 
     def __open(self) -> str:
         with open(self.path, "r") as file:
@@ -49,18 +55,18 @@ class GedcomParser:
             self.individuals.append(
                 GedcomIndividual(
                     parsed_line["level"],
+                    parsed_line["xref"],
                     parsed_line["tag"],
                     element_lines,
-                    xref=parsed_line["xref"],
                 )
             )
         elif parsed_line["tag"] == "FAM":
             self.families.append(
                 GedcomFamily(
                     parsed_line["level"],
+                    parsed_line["xref"],
                     parsed_line["tag"],
                     element_lines,
-                    xref=parsed_line["xref"],
                 )
             )
         elif parsed_line["tag"] == "HEAD":
@@ -73,27 +79,27 @@ class GedcomParser:
             self.sources.append(
                 GedcomSource(
                     parsed_line["level"],
+                    parsed_line["xref"],
                     parsed_line["tag"],
                     element_lines,
-                    xref=parsed_line["xref"],
                 )
             )
         elif parsed_line["tag"] == "REPO":
             self.repositories.append(
                 GedcomRepository(
                     parsed_line["level"],
+                    parsed_line["xref"],
                     parsed_line["tag"],
                     element_lines,
-                    xref=parsed_line["xref"],
                 )
             )
         elif parsed_line["tag"] == "OBJE":
             self.objects.append(
                 GedcomObject(
                     parsed_line["level"],
+                    parsed_line["xref"],
                     parsed_line["tag"],
                     element_lines,
-                    xref=parsed_line["xref"],
                 )
             )
 
@@ -119,3 +125,13 @@ class GedcomParser:
                         current_parsed_line = tmp_parsed_line
                         element_lines = []
             self.create_element(current_parsed_line, element_lines)
+
+    def get_stats(self) -> dict:
+        return {
+            "head": "OK" if self.head is not None else "None",
+            "individuals": len(self.individuals),
+            "families": len(self.families),
+            "sources": len(self.sources),
+            "objects": len(self.objects),
+            "repositories": len(self.repositories),
+        }

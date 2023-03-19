@@ -4,16 +4,14 @@ class GedcomElement:
         level: int,
         tag: str,
         sub_elements: list,
-        xref: str = None,
         value: str = None,
     ):
         self.level = level
         self.tag = tag
         self.value = value
-        self.xref = xref
         self.__sub_elements = []
-        if sub_elements != []:
-            current_parsed_line = self.__parse_line(sub_elements[0])
+        if self.__sub_elements != []:
+            current_parsed_line = self.__parse_line(self.__sub_elements[0])
             element_lines = []
             level = current_parsed_line["level"]
             for line in sub_elements[1:]:
@@ -50,6 +48,9 @@ class GedcomElement:
 
     def get_sub_elements(self):
         return self.__sub_elements
+
+    def find_sub_element(self, tag: str) -> list:
+        return [element for element in self.__sub_elements if element.tag == tag]
 
     def __str__(self) -> str:
         return (
