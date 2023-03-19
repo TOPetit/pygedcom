@@ -10,8 +10,8 @@ class GedcomElement:
         self.tag = tag
         self.value = value
         self.__sub_elements = []
-        if self.__sub_elements != []:
-            current_parsed_line = self.__parse_line(self.__sub_elements[0])
+        if sub_elements != []:
+            current_parsed_line = self.__parse_line(sub_elements[0])
             element_lines = []
             level = current_parsed_line["level"]
             for line in sub_elements[1:]:
@@ -23,8 +23,8 @@ class GedcomElement:
                         GedcomElement(
                             current_parsed_line["level"],
                             current_parsed_line["tag"],
-                            current_parsed_line["value"],
                             element_lines,
+                            value=current_parsed_line["value"],
                         )
                     )
                     current_parsed_line = tmp_parsed_line
@@ -33,8 +33,8 @@ class GedcomElement:
                 GedcomElement(
                     current_parsed_line["level"],
                     current_parsed_line["tag"],
-                    current_parsed_line["value"],
                     element_lines,
+                    value=current_parsed_line["value"],
                 )
             )
 

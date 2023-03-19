@@ -103,7 +103,7 @@ class GedcomParser:
                 )
             )
 
-    def parse(self) -> None:
+    def parse(self) -> dict:
         self.head = None
         self.individuals = []
         self.families = []
@@ -125,6 +125,13 @@ class GedcomParser:
                         current_parsed_line = tmp_parsed_line
                         element_lines = []
             self.create_element(current_parsed_line, element_lines)
+        return {
+            "individuals": self.individuals,
+            "families": self.families,
+            "sources": self.sources,
+            "objects": self.objects,
+            "repositories": self.repositories,
+        }
 
     def get_stats(self) -> dict:
         return {
