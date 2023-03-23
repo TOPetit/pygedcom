@@ -1,5 +1,6 @@
-from src.elements.date import GedcomDate
+from .date import GedcomDate
 from .element import GedcomElement
+from .family import GedcomFamily
 
 
 class GedcomIndividual(GedcomElement):
@@ -44,16 +45,11 @@ class GedcomIndividual(GedcomElement):
     def get_xref(self) -> str:
         return self.__xref
 
-    def get_parents(self) -> list:
-        # TODO: Implement
-        return []
-
-    def get_children(self) -> list:
-        # TODO: Implement
-        return []
-
     def get_first_name(self) -> str:
         return self.__name.split("/")[0].split(" ")[0].strip()
 
     def get_last_name(self) -> str:
         return self.__name.split("/")[-2].strip()
+
+    def __str__(self):
+        return self.get_first_name() + " " + self.get_last_name()

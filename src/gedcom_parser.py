@@ -142,3 +142,27 @@ class GedcomParser:
             "objects": len(self.objects),
             "repositories": len(self.repositories),
         }
+
+    def get_parents(self, individual: GedcomIndividual) -> list:
+        parents = []
+        for family in self.families:
+            if individual.get_xref() in family.get_children():
+                if family.get_husband() != "":
+                    parents.append(self.find_individual(family.get_husband()))
+                if family.get_wife() != "":
+                    parents.append(self.find_individual(family.get_wife()))
+        return parents
+
+    def get_children(self, individual: GedcomIndividual) -> list:
+        children = []
+        for family in self.families:
+            if individual.get_xref() in family.get_parents():
+                for child in family.get_children():
+                    children.append(self.find_individual(child))
+        return children
+
+    def find_individual(self, xref: str) -> GedcomIndividual:
+        for individual in self.individuals:
+            if individual.get_xref() == xref:
+                return individual
+        return None
