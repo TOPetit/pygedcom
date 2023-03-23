@@ -19,3 +19,12 @@ class GedcomObject(GedcomElement):
             return self.find_sub_element("FORM")[0].value
         else:
             return ""
+        
+    def get_xref(self) -> str:
+        return self.__xref
+    
+    def get_file(self) -> str:
+        return self.__file
+    
+    def get_format(self) -> str:
+        return self.__format
