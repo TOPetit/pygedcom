@@ -4,7 +4,7 @@ from .elements.individual import GedcomIndividual
 from .elements.object import GedcomObject
 from .elements.repository import GedcomRepository
 from .elements.source import GedcomSource
-from.elements.element import GedcomElement
+from .elements.element import GedcomElement
 
 
 class GedcomParser:
@@ -105,6 +105,11 @@ class GedcomParser:
             )
 
     def parse(self) -> dict:
+        """Parse the GEDCOM file and return a dictionary with the parsed elements
+
+        Returns:
+            dict -- Dictionary with the parsed elements
+        """
         self.head = None
         self.individuals = []
         self.families = []
@@ -145,6 +150,14 @@ class GedcomParser:
         }
 
     def get_parents(self, individual: GedcomIndividual) -> list:
+        """Get the parents of an individual.
+
+        Args:
+            individual (GedcomIndividual): The individual to get the parents of.
+
+        Returns:
+            list: A list of GedcomIndividual objects.
+        """
         parents = []
         for family in self.families:
             if individual.get_xref() in family.get_children():
@@ -155,6 +168,14 @@ class GedcomParser:
         return parents
 
     def get_children(self, individual: GedcomIndividual) -> list:
+        """Get the children of an individual.
+
+        Args:
+            individual (GedcomIndividual): The individual to get the children of.
+
+        Returns:
+            list: A list of GedcomIndividual objects.
+        """
         children = []
         for family in self.families:
             if individual.get_xref() in family.get_parents():
@@ -176,7 +197,7 @@ class GedcomParser:
             if element.get_xref() == xref:
                 return element
         return None
-    
+
     def find_individual(self, xref: str) -> GedcomIndividual:
         """Find an individual by its xref.
 
@@ -190,21 +211,21 @@ class GedcomParser:
 
     def find_family(self, xref: str) -> GedcomFamily:
         """Find a family by its xref.
-        
+
         Args:
             xref (str): The xref to search for.
-        
+
         Returns:
             GedcomFamily: The family if found, None otherwise.
         """
         return self.__find_root_element(self.families, xref)
-    
+
     def find_source(self, xref: str) -> GedcomSource:
         """Find a source by its xref.
-        
+
         Args:
             xref (str): The xref to search for.
-            
+
         Returns:
             GedcomSource: The source if found, None otherwise.
         """
@@ -212,21 +233,21 @@ class GedcomParser:
 
     def find_object(self, xref: str) -> GedcomObject:
         """Find an object by its xref.
-        
+
         Args:
             xref (str): The xref to search for.
-            
+
         Returns:
             GedcomObject: The object if found, None otherwise.
         """
         return self.__find_root_element(self.objects, xref)
-    
+
     def find_repository(self, xref: str) -> GedcomRepository:
         """Find a repository by its xref.
-        
+
         Args:
             xref (str): The xref to search for.
-            
+
         Returns:
             GedcomRepository: The repository if found, None otherwise.
         """
