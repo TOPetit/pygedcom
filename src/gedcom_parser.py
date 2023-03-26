@@ -4,6 +4,7 @@ from .elements.individual import GedcomIndividual
 from .elements.object import GedcomObject
 from .elements.repository import GedcomRepository
 from .elements.source import GedcomSource
+from.elements.element import GedcomElement
 
 
 class GedcomParser:
@@ -161,8 +162,72 @@ class GedcomParser:
                     children.append(self.find_individual(child))
         return children
 
-    def find_individual(self, xref: str) -> GedcomIndividual:
-        for individual in self.individuals:
-            if individual.get_xref() == xref:
-                return individual
+    def __find_root_element(self, collection: list, xref: str) -> GedcomElement:
+        """Find an element in a collection by its xref.
+
+        Args:
+            collection (list): The collection to search in.
+            xref (str): The xref to search for.
+
+        Returns:
+            GedcomElement: The element if found, None otherwise.
+        """
+        for element in collection:
+            if element.get_xref() == xref:
+                return element
         return None
+    
+    def find_individual(self, xref: str) -> GedcomIndividual:
+        """Find an individual by its xref.
+
+        Args:
+            xref (str): The xref to search for.
+
+        Returns:
+            GedcomIndividual: The individual if found, None otherwise.
+        """
+        return self.__find_root_element(self.individuals, xref)
+
+    def find_family(self, xref: str) -> GedcomFamily:
+        """Find a family by its xref.
+        
+        Args:
+            xref (str): The xref to search for.
+        
+        Returns:
+            GedcomFamily: The family if found, None otherwise.
+        """
+        return self.__find_root_element(self.families, xref)
+    
+    def find_source(self, xref: str) -> GedcomSource:
+        """Find a source by its xref.
+        
+        Args:
+            xref (str): The xref to search for.
+            
+        Returns:
+            GedcomSource: The source if found, None otherwise.
+        """
+        return self.__find_root_element(self.sources, xref)
+
+    def find_object(self, xref: str) -> GedcomObject:
+        """Find an object by its xref.
+        
+        Args:
+            xref (str): The xref to search for.
+            
+        Returns:
+            GedcomObject: The object if found, None otherwise.
+        """
+        return self.__find_root_element(self.objects, xref)
+    
+    def find_repository(self, xref: str) -> GedcomRepository:
+        """Find a repository by its xref.
+        
+        Args:
+            xref (str): The xref to search for.
+            
+        Returns:
+            GedcomRepository: The repository if found, None otherwise.
+        """
+        return self.__find_root_element(self.repositories, xref)
