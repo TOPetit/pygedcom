@@ -9,6 +9,11 @@ from .elements.element import GedcomElement
 
 class GedcomParser:
     def __init__(self, path: str):
+        """Initialize the GEDCOM parser.
+
+        Args:
+            path (str): The path to the GEDCOM file.
+        """
         self.path = path
         self.head = None
         self.individuals = []
@@ -18,11 +23,24 @@ class GedcomParser:
         self.repositories = []
 
     def __open(self) -> str:
+        """Open the GEDCOM file and return the content.
+
+        Returns:
+            str: The content of the GEDCOM file.
+        """
         with open(self.path, "r") as file:
             data = file.read()
         return data
 
     def __parse_line(self, line: str) -> dict:
+        """Parse a line of a GEDCOM file.
+
+        Args:
+            line (str): The line to parse.
+
+        Returns:
+            dict: A dictionary with the level, xref, tag and value.
+        """
         chars = line.split(" ")
         level = int(chars.pop(0))
         xref = chars.pop(0) if chars[0].startswith("@") else None
@@ -31,6 +49,11 @@ class GedcomParser:
         return {"level": level, "xref": xref, "tag": tag, "value": value}
 
     def verify(self) -> dict:
+        """Verify the file is a valid GEDCOM file. This only checks the level of each line, not the content.
+
+        Returns:
+            dict: A dictionary with the status and a message. Status can be "ok" or "error".
+        """
         file = self.__open()
         lines = file.split("\n")
         current_level = 0
@@ -51,7 +74,13 @@ class GedcomParser:
                 current_level = parsed_line["level"]
         return {"status": "ok", "message": ""}
 
-    def create_element(self, parsed_line: dict, element_lines: list) -> object:
+    def __create_element(self, parsed_line: dict, element_lines: list):
+        """Create an element based on the parsed line and the element lines.
+
+        Args:
+            parsed_line (dict): The parsed line.
+            element_lines (list): The lines of the element.
+        """
         if parsed_line["tag"] == "INDI":
             self.individuals.append(
                 GedcomIndividual(
@@ -127,10 +156,10 @@ class GedcomParser:
                     if tmp_parsed_line["level"] > 0:
                         element_lines.append(line)
                     else:
-                        self.create_element(current_parsed_line, element_lines)
+                        self.__create_element(current_parsed_line, element_lines)
                         current_parsed_line = tmp_parsed_line
                         element_lines = []
-            self.create_element(current_parsed_line, element_lines)
+            self.__create_element(current_parsed_line, element_lines)
         return {
             "individuals": self.individuals,
             "families": self.families,
@@ -140,6 +169,11 @@ class GedcomParser:
         }
 
     def get_stats(self) -> dict:
+        """Get statistics about the GEDCOM file.
+
+        Returns:
+            dict -- Dictionary with the statistics.
+        """
         return {
             "head": "OK" if self.head is not None else "None",
             "individuals": len(self.individuals),
