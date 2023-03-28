@@ -41,3 +41,10 @@ class GedcomFamily(GedcomElement):
 
     def get_parents(self) -> list:
         return [self.__husband, self.__wife]
+
+    def get_data(self):
+        return {
+            "husband": self.__husband,
+            "wife": self.__wife,
+            "children": self.__children,
+        }

@@ -53,3 +53,12 @@ class GedcomIndividual(GedcomElement):
 
     def __str__(self):
         return self.get_first_name() + " " + self.get_last_name()
+
+    def get_data(self):
+        return {
+            "name": self.__name,
+            "first_name": self.get_first_name(),
+            "last_name": self.get_last_name(),
+            "date_of_birth": str(self.__date_of_birth),
+            "date_of_death": str(self.__date_of_death),
+        }

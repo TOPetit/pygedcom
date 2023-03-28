@@ -28,3 +28,6 @@ class GedcomObject(GedcomElement):
 
     def get_format(self) -> str:
         return self.__format
+
+    def get_data(self):
+        return {"file": self.__file, "format": self.__format}

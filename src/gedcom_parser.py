@@ -1,3 +1,4 @@
+import json
 from .elements.family import GedcomFamily
 from .elements.head import GedcomHead
 from .elements.individual import GedcomIndividual
@@ -182,6 +183,40 @@ class GedcomParser:
             "objects": len(self.objects),
             "repositories": len(self.repositories),
         }
+
+    def export(self, format: str = "json") -> str:
+        """Export the GEDCOM file to another format.
+
+        Args:
+            format (str, optional): The format to export to. Defaults to "json".
+
+        Returns:
+            str -- The exported json string.
+        """
+        if format == "json":
+            data = {
+                "individuals": {},
+                "families": {},
+                "sources": {},
+                "objects": {},
+                "repositories": {},
+            }
+            for individual in self.individuals:
+                data["individuals"][individual.get_xref()] = individual.get_data()
+
+            for family in self.families:
+                data["families"][family.get_xref()] = family.get_data()
+
+            for source in self.sources:
+                data["sources"][source.get_xref()] = source.get_data()
+
+            for object in self.objects:
+                data["objects"][object.get_xref()] = object.get_data()
+
+            for repository in self.repositories:
+                data["repositories"][repository.get_xref()] = repository.get_data()
+
+            return json.dumps(data, indent=4)
 
     def get_parents(self, individual: GedcomIndividual) -> list:
         """Get the parents of an individual.
