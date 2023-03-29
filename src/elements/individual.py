@@ -1,4 +1,4 @@
-from .date import GedcomDate
+from .sub_elements.date import GedcomDate
 from .element import GedcomElement
 from .family import GedcomFamily
 
@@ -59,6 +59,10 @@ class GedcomIndividual(GedcomElement):
             "name": self.__name,
             "first_name": self.get_first_name(),
             "last_name": self.get_last_name(),
-            "date_of_birth": str(self.__date_of_birth),
-            "date_of_death": str(self.__date_of_death),
+            "date_of_birth": self.__date_of_birth.get_data()
+            if self.__date_of_birth
+            else "",
+            "date_of_death": self.__date_of_death.get_data()
+            if self.__date_of_death
+            else "",
         }

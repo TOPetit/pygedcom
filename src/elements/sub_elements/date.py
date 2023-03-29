@@ -1,9 +1,10 @@
 import re
-from .element import GedcomElement
+from ..element import GedcomElement
 
 
-class GedcomDate:
+class GedcomDate(GedcomElement):
     def __init__(self, element: GedcomElement):
+        super().__init__(element.level, element.tag, element.get_sub_elements())
         self.__value = element.value
         self.__day, self.__month, self.__year = self.__parse_value()
 
@@ -67,3 +68,13 @@ class GedcomDate:
         if self.__year:
             results.append(self.__year)
         return " ".join(results) if results != [] else ""
+
+    def __repr__(self):
+        return self.__str__()
+
+    def get_data(self) -> tuple:
+        return {
+            "day": self.__day,
+            "month": self.__month,
+            "year": self.__year,
+        }
