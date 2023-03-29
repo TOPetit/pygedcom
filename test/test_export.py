@@ -20,5 +20,4 @@ def test_export_01():
     assert result["families"]["@F1@"]["husband"] == "@I1@"
     assert result["families"]["@F1@"]["wife"] == "@I2@"
     assert result["families"]["@F1@"]["children"] == ["@I3@"]
-    # assert result["families"]['@F1@']["marriage_date"] == "01 JAN 1920"
-    # assert result["families"]['@F1@']["divorce_date"] == "01 JAN 1940"
+    assert result["families"]['@F1@']["marriage_date"] == "01 JAN 1925"
