@@ -41,3 +41,8 @@ def test_verify_10():
     result = parser.verify()
     assert result["status"] == "error"
     assert result["message"] == "Invalid level on line 4: 3 DATE 01 JAN 1900"
+
+def test_verify_20():
+    parser = gedcom_parser.GedcomParser("test/samples/20_complex_sample.ged")
+    result = parser.verify()
+    assert result["status"] == "ok"

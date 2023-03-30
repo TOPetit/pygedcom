@@ -27,3 +27,17 @@ def test_export_01():
     assert result["families"]["@F1@"]["marriage_date"]["day"] == "01"
     assert result["families"]["@F1@"]["marriage_date"]["month"] == "JAN"
     assert result["families"]["@F1@"]["marriage_date"]["year"] == "1925"
+
+
+def test_export_20():
+    parser = gedcom_parser.GedcomParser("test/samples/20_complex_sample.ged")
+    parser.parse()
+    result = json.loads(parser.export())
+    assert result["individuals"]["@1@"]["name"] == "Robert Eugene/Williams/"
+    assert result["individuals"]["@1@"]["date_of_birth"]["day"] == "02"
+    assert result["individuals"]["@1@"]["date_of_birth"]["month"] == "OCT"
+    assert result["individuals"]["@1@"]["date_of_birth"]["year"] == "1822"
+    assert result["individuals"]["@1@"]["date_of_death"]["day"] == "14"
+    assert result["individuals"]["@1@"]["date_of_death"]["month"] == "APR"
+    assert result["individuals"]["@1@"]["date_of_death"]["year"] == "1905"
+
