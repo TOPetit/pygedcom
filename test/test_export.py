@@ -40,4 +40,3 @@ def test_export_20():
     assert result["individuals"]["@1@"]["date_of_death"]["day"] == "14"
     assert result["individuals"]["@1@"]["date_of_death"]["month"] == "APR"
     assert result["individuals"]["@1@"]["date_of_death"]["year"] == "1905"
-
