@@ -10,6 +10,14 @@ class GedcomIndividual(GedcomElement):
         self.__name = self.find_sub_element("NAME")[0].value
         self.__date_of_birth = self.__find_date_of_birth()
         self.__date_of_death = self.__find_date_of_death()
+        self.__sex = self.__find_sex()
+
+    def __find_sex(self):
+        return (
+            self.find_sub_element("SEX")[0].value
+            if self.find_sub_element("SEX") != []
+            else None
+        )
 
     def __find_date_of_death(self) -> GedcomDate:
         if (
@@ -61,6 +69,7 @@ class GedcomIndividual(GedcomElement):
             "name": self.__name,
             "first_name": self.get_first_name(),
             "last_name": self.get_last_name(),
+            "sex": self.__sex,
             "date_of_birth": self.__date_of_birth.get_data()
             if self.__date_of_birth
             else "",

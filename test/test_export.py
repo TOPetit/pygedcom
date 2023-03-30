@@ -37,6 +37,7 @@ def test_export_20():
     assert result["individuals"]["@1@"]["date_of_birth"]["day"] == "02"
     assert result["individuals"]["@1@"]["date_of_birth"]["month"] == "OCT"
     assert result["individuals"]["@1@"]["date_of_birth"]["year"] == "1822"
+    assert result["individuals"]["@1@"]["sex"] == "M"
     assert result["individuals"]["@1@"]["date_of_death"]["day"] == "14"
     assert result["individuals"]["@1@"]["date_of_death"]["month"] == "APR"
     assert result["individuals"]["@1@"]["date_of_death"]["year"] == "1905"
