@@ -14,13 +14,8 @@ class GedcomPlace(GedcomElement):
         self.init_properties()
 
     def init_properties(self):
-        (
-            self.__city,
-            self.__postal_code,
-            self.__county,
-            self.__region,
-            self.__country,
-        ) = self.__parse_value()[:5]
+        self.__place_infos = self.__parse_value()
+
         self.__map = self.__find_map()
 
     def __find_map(self) -> str:
@@ -35,33 +30,14 @@ class GedcomPlace(GedcomElement):
     def __parse_value(self) -> list:
         return self.value.split(",")
 
-    def get_city(self) -> str:
-        return self.__city
-
-    def get_postal_code(self) -> str:
-        return self.__postal_code
-
-    def get_county(self) -> str:
-        return self.__county
-
-    def get_region(self) -> str:
-        return self.__region
-
-    def get_country(self) -> str:
-        return self.__country
-
     def __str__(self) -> str:
-        return self.__city + ", " + self.__postal_code + self.__country
+        return " ".join(self.__place_infos)
 
     def __repr__(self) -> str:
         return self.__str__()
 
     def get_data(self) -> dict:
         return {
-            "city": self.__city,
-            "postal_code": self.__postal_code,
-            "county": self.__county,
-            "region": self.__region,
-            "country": self.__country,
+            "infos": self.__place_infos,
             "map": self.__map.get_data() if self.__map is not None else None,
         }
