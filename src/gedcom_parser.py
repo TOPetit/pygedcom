@@ -216,7 +216,7 @@ class GedcomParser:
             for repository in self.repositories:
                 data["repositories"][repository.get_xref()] = repository.get_data()
 
-            return json.dumps(data, indent=4)
+            return json.dumps(data, indent=4, ensure_ascii=False)
 
     def get_parents(self, individual: GedcomIndividual) -> list:
         """Get the parents of an individual.

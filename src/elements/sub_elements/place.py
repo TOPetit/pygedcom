@@ -3,26 +3,37 @@ from ..element import GedcomElement
 
 
 class GedcomPlace(GedcomElement):
-    def __init__(self, element: GedcomElement):
-        super().__init__(element.level, element.tag, element.get_sub_elements())
-        self.__value = element.value
+    def __init__(
+        self,
+        level: int,
+        tag: str,
+        sub_elements: list,
+        value: str = None,
+    ):
+        super().__init__(level, tag, sub_elements, value=value)
+        self.init_properties()
+
+    def init_properties(self):
         (
             self.__city,
             self.__postal_code,
             self.__county,
             self.__region,
             self.__country,
-        ) = self.__parse_value()
+        ) = self.__parse_value()[:5]
         self.__map = self.__find_map()
 
     def __find_map(self) -> str:
         map_elements = self.find_sub_element("MAP")
         if map_elements != []:
-            return GedcomMap(map_elements[0])
+            map = map_elements[0]
+            map.__class__ = GedcomMap
+            map.init_properties()
+            return map
         return None
 
     def __parse_value(self) -> list:
-        return self.__value.split(",")
+        return self.value.split(",")
 
     def get_city(self) -> str:
         return self.__city
@@ -38,9 +49,6 @@ class GedcomPlace(GedcomElement):
 
     def get_country(self) -> str:
         return self.__country
-
-    def get_value(self) -> str:
-        return self.__value
 
     def __str__(self) -> str:
         return self.__city + ", " + self.__postal_code + self.__country

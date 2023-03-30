@@ -3,10 +3,15 @@ from ..element import GedcomElement
 
 
 class GedcomDate(GedcomElement):
-    def __init__(self, element: GedcomElement):
-        super().__init__(element.level, element.tag, element.get_sub_elements())
-        self.__value = element.value
-        self.__day, self.__month, self.__year = self.__parse_value()
+    def __init__(
+        self,
+        level: int,
+        tag: str,
+        sub_elements: list,
+        value: str = None,
+    ):
+        super().__init__(level, tag, sub_elements, value=value)
+        self.init_properties()
 
     def init_properties(self):
         self.__day, self.__month, self.__year = self.__parse_value()

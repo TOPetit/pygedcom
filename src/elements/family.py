@@ -1,4 +1,5 @@
 from src.elements.sub_elements.date import GedcomDate
+from src.elements.sub_elements.place import GedcomPlace
 from .element import GedcomElement
 
 
@@ -48,7 +49,7 @@ class GedcomFamily(GedcomElement):
         if self.__are_married():
             if self.find_sub_element("MARR")[0].find_sub_element("PLAC") != []:
                 date = self.find_sub_element("MARR")[0].find_sub_element("PLAC")[0]
-                date.__class__ = GedcomDate
+                date.__class__ = GedcomPlace
                 date.init_properties()
                 return date
         return None
