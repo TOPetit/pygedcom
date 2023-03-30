@@ -38,17 +38,19 @@ class GedcomFamily(GedcomElement):
     def __find_marriage_date(self) -> GedcomDate:
         if self.__are_married():
             if self.find_sub_element("MARR")[0].find_sub_element("DATE") != []:
-                return GedcomDate(
-                    self.find_sub_element("MARR")[0].find_sub_element("DATE")[0]
-                )
+                date = self.find_sub_element("MARR")[0].find_sub_element("DATE")[0]
+                date.__class__ = GedcomDate
+                date.init_properties()
+                return date
         return None
 
     def __find_marriage_place(self) -> GedcomDate:
         if self.__are_married():
             if self.find_sub_element("MARR")[0].find_sub_element("PLAC") != []:
-                return GedcomDate(
-                    self.find_sub_element("MARR")[0].find_sub_element("PLAC")[0]
-                )
+                date = self.find_sub_element("MARR")[0].find_sub_element("PLAC")[0]
+                date.__class__ = GedcomDate
+                date.init_properties()
+                return date
         return None
 
     def get_xref(self) -> str:
@@ -73,9 +75,9 @@ class GedcomFamily(GedcomElement):
             "children": self.__children,
             "married": self.__married,
             "marriage_date": self.__marriage_date.get_data()
-            if self.__marriage_date
+            if self.__married and self.__marriage_date
             else "",
             "marriage_place": self.__marriage_place.get_data()
-            if self.__marriage_place
+            if self.__married and self.__marriage_place
             else "",
         }

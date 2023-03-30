@@ -16,9 +16,10 @@ class GedcomIndividual(GedcomElement):
             self.find_sub_element("DEAT") != []
             and self.find_sub_element("DEAT")[0].find_sub_element("DATE") != []
         ):
-            return GedcomDate(
-                self.find_sub_element("DEAT")[0].find_sub_element("DATE")[0]
-            )
+            date = self.find_sub_element("DEAT")[0].find_sub_element("DATE")[0]
+            date.__class__ = GedcomDate
+            date.init_properties()
+            return date
         else:
             return ""
 
@@ -27,9 +28,10 @@ class GedcomIndividual(GedcomElement):
             self.find_sub_element("BIRT") != []
             and self.find_sub_element("BIRT")[0].find_sub_element("DATE") != []
         ):
-            return GedcomDate(
-                self.find_sub_element("BIRT")[0].find_sub_element("DATE")[0]
-            )
+            date = self.find_sub_element("BIRT")[0].find_sub_element("DATE")[0]
+            date.__class__ = GedcomDate
+            date.init_properties()
+            return date
         else:
             return ""
 

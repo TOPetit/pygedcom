@@ -8,32 +8,35 @@ class GedcomDate(GedcomElement):
         self.__value = element.value
         self.__day, self.__month, self.__year = self.__parse_value()
 
+    def init_properties(self):
+        self.__day, self.__month, self.__year = self.__parse_value()
+
     def __parse_value(self) -> tuple:
-        if self.__value == "":
+        if self.value == "":
             return None, None, None
-        if self.__value.startswith("ABT"):
-            return self.__parse_date(self.__value[4:])
-        if self.__value.startswith("BEF"):
-            return self.__parse_date(self.__value[4:])
-        if self.__value.startswith("AFT"):
-            return self.__parse_date(self.__value[4:])
-        if self.__value.startswith("CAL"):
-            return self.__parse_date(self.__value[4:])
-        if self.__value.startswith("EST"):
-            return self.__parse_date(self.__value[4:])
-        if self.__value.startswith("INT"):
-            return self.__parse_date(self.__value[4:])
-        if self.__value.startswith("TO"):
-            return self.__parse_date(self.__value[3:])
-        if self.__value.startswith("FROM"):
+        if self.value.startswith("ABT"):
+            return self.__parse_date(self.value[4:])
+        if self.value.startswith("BEF"):
+            return self.__parse_date(self.value[4:])
+        if self.value.startswith("AFT"):
+            return self.__parse_date(self.value[4:])
+        if self.value.startswith("CAL"):
+            return self.__parse_date(self.value[4:])
+        if self.value.startswith("EST"):
+            return self.__parse_date(self.value[4:])
+        if self.value.startswith("INT"):
+            return self.__parse_date(self.value[4:])
+        if self.value.startswith("TO"):
+            return self.__parse_date(self.value[3:])
+        if self.value.startswith("FROM"):
             # TODO Implement 2 dates format
             return None, None, None
-        if self.__value.startswith("BET"):
+        if self.value.startswith("BET"):
             # TODO Implement 2 dates format
             return None, None, None
         # TODO Implement 2 dates format with OR
         else:
-            return self.__parse_date(self.__value)
+            return self.__parse_date(self.value)
 
     def __parse_date(self, date_string: str) -> tuple:
         day = month = year = None
