@@ -1,5 +1,19 @@
+# TODO: make the parameters private
+
 class GedcomElement:
-    """Class for representing a Gedcom element."""
+    """Class for representing a Gedcom element.
+    
+    :param level: The level of the Gedcom element.
+    :type level: int
+    :param tag: The tag of the Gedcom element.
+    :type tag: str
+    :param sub_elements: The sub elements of the Gedcom element.
+    :type sub_elements: list
+    :param value: The value of the Gedcom element. Defaults to None.
+    :type value: str, optional
+    :return: The Gedcom element.
+    :rtype: GedcomElement
+    """
 
     def __init__(
         self,
@@ -8,17 +22,7 @@ class GedcomElement:
         sub_elements: list,
         value: str = None,
     ):
-        """Initialize the Gedcom element.
-
-        Args:
-            level (int): The level of the Gedcom element.
-            tag (str): The tag of the Gedcom element.
-            sub_elements (list): The sub elements of the Gedcom element.
-            value (str, optional): The value of the Gedcom element. Defaults to None.
-
-        Returns:
-            GedcomElement: The Gedcom element.
-        """
+        """Initialize the Gedcom element."""
         self.level = level
         self.tag = tag
         self.value = value
@@ -54,11 +58,10 @@ class GedcomElement:
     def __parse_line(self, line: str) -> dict:
         """Parse a line of a Gedcom file.
 
-        Args:
-            line (str): The line to parse. Result contains the level, xref, tag and value.
-
-        Returns:
-            dict: The parsed line.
+        :param line: The line to parse.
+        :type line: str
+        :return: The parsed line.
+        :rtype: dict
         """
         chars = line.split(" ")
         level = int(chars.pop(0))
@@ -70,27 +73,26 @@ class GedcomElement:
     def get_sub_elements(self):
         """Get the sub elements of the Gedcom element.
 
-        Returns:
-            list: The sub elements of the Gedcom element as GedcomElements.
+        :return: The sub elements of the Gedcom element.
+        :rtype: list
         """
         return self.__sub_elements
 
     def find_sub_element(self, tag: str) -> list:
         """Find a sub element by tag.
 
-        Args:
-            tag (str): The tag of the sub element.
-
-        Returns:
-            list: The sub elements of the Gedcom element as GedcomElements with the given tag.
+        :param tag: The tag of the sub element to find.
+        :type tag: str
+        :return: The sub element found.
+        :rtype: list
         """
         return [element for element in self.__sub_elements if element.tag == tag]
 
     def __str__(self) -> str:
         """Get the string representation of the Gedcom element.
 
-        Returns:
-            str: The string representation of the Gedcom element.
+        :return: The string representation of the Gedcom element.
+        :rtype: str
         """
         return (
             "Level: "
@@ -104,7 +106,7 @@ class GedcomElement:
     def __repr__(self) -> str:
         """Get the string representation of the Gedcom element.
 
-        Returns:
-            str: The string representation of the Gedcom element.
+        :return: The string representation of the Gedcom element.
+        :rtype: str
         """
         return self.__str__()

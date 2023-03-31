@@ -9,14 +9,18 @@ from .elements.element import GedcomElement
 
 
 class GedcomParser:
-    """The GEDCOM parser."""
+    """The GEDCOM parser main class.
+
+    Use this class to initialize the parsing of a GEDCOM file.
+    You can then verify, parse, access the elements and export the data.
+    
+    :param path: The path to the GEDCOM file.
+    :type path: str
+    :return: The GEDCOM parser.
+    :rtype: GedcomParser
+    """
 
     def __init__(self, path: str):
-        """Initialize the GEDCOM parser.
-
-        Args:
-            path (str): The path to the GEDCOM file.
-        """
         self.path = path
         self.head = None
         self.individuals = []
@@ -28,8 +32,8 @@ class GedcomParser:
     def __open(self) -> str:
         """Open the GEDCOM file and return the content.
 
-        Returns:
-            str: The content of the GEDCOM file.
+        :return: The content of the GEDCOM file.
+        :rtype: str
         """
         with open(self.path, "r") as file:
             data = file.read()
@@ -38,11 +42,10 @@ class GedcomParser:
     def __parse_line(self, line: str) -> dict:
         """Parse a line of a GEDCOM file.
 
-        Args:
-            line (str): The line to parse.
-
-        Returns:
-            dict: A dictionary with the level, xref, tag and value.
+        :param line: The line to parse.
+        :type line: str
+        :return: A dictionary with the level, the xref, the tag and the value.
+        :rtype: dict
         """
         chars = line.split(" ")
         level = int(chars.pop(0))
@@ -54,8 +57,8 @@ class GedcomParser:
     def verify(self) -> dict:
         """Verify the file is a valid GEDCOM file. This only checks the level of each line, not the content.
 
-        Returns:
-            dict: A dictionary with the status and a message. Status can be "ok" or "error".
+        :return: A dictionary with the status and the message.
+        :rtype: dict
         """
         file = self.__open()
         lines = file.split("\n")
@@ -80,9 +83,10 @@ class GedcomParser:
     def __create_element(self, parsed_line: dict, element_lines: list):
         """Create an element based on the parsed line and the element lines.
 
-        Args:
-            parsed_line (dict): The parsed line.
-            element_lines (list): The lines of the element.
+        :param parsed_line: The parsed line.
+        :type parsed_line: dict
+        :param element_lines: The lines of the element.
+        :type element_lines: list
         """
         if parsed_line["tag"] == "INDI":
             self.individuals.append(
@@ -139,8 +143,8 @@ class GedcomParser:
     def parse(self) -> dict:
         """Parse the GEDCOM file and return a dictionary with the parsed elements
 
-        Returns:
-            dict -- Dictionary with the parsed elements
+        :return: A dictionary with the parsed elements.
+        :rtype: dict
         """
         self.head = None
         self.individuals = []
@@ -174,8 +178,8 @@ class GedcomParser:
     def get_stats(self) -> dict:
         """Get statistics about the GEDCOM file.
 
-        Returns:
-            dict -- Dictionary with the statistics.
+        :return: A dictionary with the statistics.
+        :rtype: dict
         """
         return {
             "head": "OK" if self.head is not None else "None",
@@ -189,11 +193,10 @@ class GedcomParser:
     def export(self, format: str = "json") -> str:
         """Export the GEDCOM file to another format.
 
-        Args:
-            format (str, optional): The format to export to. Defaults to "json".
-
-        Returns:
-            str -- The exported json string.
+        :param format: The format to export to. Default is "json".
+        :type format: str
+        :return: The exported file.
+        :rtype: str
         """
         if format == "json":
             data = {
@@ -223,11 +226,10 @@ class GedcomParser:
     def get_parents(self, individual: GedcomIndividual) -> list:
         """Get the parents of an individual.
 
-        Args:
-            individual (GedcomIndividual): The individual to get the parents of.
-
-        Returns:
-            list: A list of GedcomIndividual objects.
+        :param individual: The individual to get the parents of.
+        :type individual: GedcomIndividual
+        :return: A list of GedcomIndividual objects.
+        :rtype: list
         """
         parents = []
         for family in self.families:
@@ -241,11 +243,10 @@ class GedcomParser:
     def get_children(self, individual: GedcomIndividual) -> list:
         """Get the children of an individual.
 
-        Args:
-            individual (GedcomIndividual): The individual to get the children of.
-
-        Returns:
-            list: A list of GedcomIndividual objects.
+        :param individual: The individual to get the children of.
+        :type individual: GedcomIndividual
+        :return: A list of GedcomIndividual objects.
+        :rtype: list
         """
         children = []
         for family in self.families:
@@ -257,12 +258,12 @@ class GedcomParser:
     def __find_root_element(self, collection: list, xref: str) -> GedcomElement:
         """Find an element in a collection by its xref.
 
-        Args:
-            collection (list): The collection to search in.
-            xref (str): The xref to search for.
-
-        Returns:
-            GedcomElement: The element if found, None otherwise.
+        :param collection: The collection to search in.
+        :type collection: list
+        :param xref: The xref to search for.
+        :type xref: str
+        :return: The element if found, None otherwise.
+        :rtype: GedcomElement
         """
         for element in collection:
             if element.get_xref() == xref:
@@ -272,54 +273,49 @@ class GedcomParser:
     def find_individual(self, xref: str) -> GedcomIndividual:
         """Find an individual by its xref.
 
-        Args:
-            xref (str): The xref to search for.
-
-        Returns:
-            GedcomIndividual: The individual if found, None otherwise.
+        :param xref: The xref to search for.
+        :type xref: str
+        :return: The individual if found, None otherwise.
+        :rtype: GedcomIndividual
         """
         return self.__find_root_element(self.individuals, xref)
 
     def find_family(self, xref: str) -> GedcomFamily:
         """Find a family by its xref.
 
-        Args:
-            xref (str): The xref to search for.
-
-        Returns:
-            GedcomFamily: The family if found, None otherwise.
+        :param xref: The xref to search for.
+        :type xref: str
+        :return: The family if found, None otherwise.
+        :rtype: GedcomFamily
         """
         return self.__find_root_element(self.families, xref)
 
     def find_source(self, xref: str) -> GedcomSource:
         """Find a source by its xref.
 
-        Args:
-            xref (str): The xref to search for.
-
-        Returns:
-            GedcomSource: The source if found, None otherwise.
+        :param xref: The xref to search for.
+        :type xref: str
+        :return: The source if found, None otherwise.
+        :rtype: GedcomSource
         """
         return self.__find_root_element(self.sources, xref)
 
     def find_object(self, xref: str) -> GedcomObject:
         """Find an object by its xref.
 
-        Args:
-            xref (str): The xref to search for.
-
-        Returns:
-            GedcomObject: The object if found, None otherwise.
+        :param xref: The xref to search for.
+        :type xref: str
+        :return: The object if found, None otherwise.
+        :rtype: GedcomObject
         """
         return self.__find_root_element(self.objects, xref)
 
     def find_repository(self, xref: str) -> GedcomRepository:
         """Find a repository by its xref.
 
-        Args:
-            xref (str): The xref to search for.
-
-        Returns:
-            GedcomRepository: The repository if found, None otherwise.
+        :param xref: The xref to search for.
+        :type xref: str
+        :return: The repository if found, None otherwise.
+        :rtype: GedcomRepository
         """
         return self.__find_root_element(self.repositories, xref)
