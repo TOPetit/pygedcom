@@ -9,5 +9,5 @@ data = parser.parse()
 print(parser.get_stats())
 
 json_string = parser.export()
-with open("test.json", "w") as file:
+with open("private/test.json", "w") as file:
     file.write(json_string)
