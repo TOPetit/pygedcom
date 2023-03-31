@@ -1,4 +1,6 @@
 class GedcomElement:
+    """Class for representing a Gedcom element."""
+
     def __init__(
         self,
         level: int,
@@ -6,6 +8,17 @@ class GedcomElement:
         sub_elements: list,
         value: str = None,
     ):
+        """Initialize the Gedcom element.
+
+        Args:
+            level (int): The level of the Gedcom element.
+            tag (str): The tag of the Gedcom element.
+            sub_elements (list): The sub elements of the Gedcom element.
+            value (str, optional): The value of the Gedcom element. Defaults to None.
+
+        Returns:
+            GedcomElement: The Gedcom element.
+        """
         self.level = level
         self.tag = tag
         self.value = value
@@ -39,6 +52,14 @@ class GedcomElement:
             )
 
     def __parse_line(self, line: str) -> dict:
+        """Parse a line of a Gedcom file.
+
+        Args:
+            line (str): The line to parse. Result contains the level, xref, tag and value.
+
+        Returns:
+            dict: The parsed line.
+        """
         chars = line.split(" ")
         level = int(chars.pop(0))
         xref = chars.pop(0) if chars[0].startswith("@") else None
@@ -47,12 +68,30 @@ class GedcomElement:
         return {"level": level, "xref": xref, "tag": tag, "value": value}
 
     def get_sub_elements(self):
+        """Get the sub elements of the Gedcom element.
+
+        Returns:
+            list: The sub elements of the Gedcom element as GedcomElements.
+        """
         return self.__sub_elements
 
     def find_sub_element(self, tag: str) -> list:
+        """Find a sub element by tag.
+
+        Args:
+            tag (str): The tag of the sub element.
+
+        Returns:
+            list: The sub elements of the Gedcom element as GedcomElements with the given tag.
+        """
         return [element for element in self.__sub_elements if element.tag == tag]
 
     def __str__(self) -> str:
+        """Get the string representation of the Gedcom element.
+
+        Returns:
+            str: The string representation of the Gedcom element.
+        """
         return (
             "Level: "
             + str(self.level)
@@ -63,4 +102,9 @@ class GedcomElement:
         )
 
     def __repr__(self) -> str:
+        """Get the string representation of the Gedcom element.
+
+        Returns:
+            str: The string representation of the Gedcom element.
+        """
         return self.__str__()

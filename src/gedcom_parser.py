@@ -9,6 +9,8 @@ from .elements.element import GedcomElement
 
 
 class GedcomParser:
+    """The GEDCOM parser."""
+
     def __init__(self, path: str):
         """Initialize the GEDCOM parser.
 
