@@ -1,3 +1,4 @@
+from src.elements.sub_elements.commonEvent import GedcomCommonEvent
 from src.elements.sub_elements.date import GedcomDate
 from src.elements.sub_elements.place import GedcomPlace
 from .element import GedcomElement
@@ -12,8 +13,16 @@ class GedcomFamily(GedcomElement):
         self.__children = self.__find_children()
         self.__married = self.__are_married()
         if self.__married:
-            self.__marriage_date = self.__find_marriage_date()
-            self.__marriage_place = self.__find_marriage_place()
+            self.__marriage = self.__init_marriage()
+
+    def __init_marriage(self) -> GedcomCommonEvent:
+        if self.find_sub_element("MARR") != []:
+            marriage = self.find_sub_element("MARR")[0]
+            marriage.__class__ = GedcomCommonEvent
+            marriage.init_properties()
+            return marriage
+        else:
+            return None
 
     def __find_husband(self) -> str:
         if self.find_sub_element("HUSB") != []:
@@ -36,24 +45,6 @@ class GedcomFamily(GedcomElement):
     def __are_married(self) -> str:
         return self.find_sub_element("MARR") != []
 
-    def __find_marriage_date(self) -> GedcomDate:
-        if self.__are_married():
-            if self.find_sub_element("MARR")[0].find_sub_element("DATE") != []:
-                date = self.find_sub_element("MARR")[0].find_sub_element("DATE")[0]
-                date.__class__ = GedcomDate
-                date.init_properties()
-                return date
-        return None
-
-    def __find_marriage_place(self) -> GedcomDate:
-        if self.__are_married():
-            if self.find_sub_element("MARR")[0].find_sub_element("PLAC") != []:
-                date = self.find_sub_element("MARR")[0].find_sub_element("PLAC")[0]
-                date.__class__ = GedcomPlace
-                date.init_properties()
-                return date
-        return None
-
     def get_xref(self) -> str:
         return self.__xref
 
@@ -75,10 +66,5 @@ class GedcomFamily(GedcomElement):
             "wife": self.__wife,
             "children": self.__children,
             "married": self.__married,
-            "marriage_date": self.__marriage_date.get_data()
-            if self.__married and self.__marriage_date
-            else "",
-            "marriage_place": self.__marriage_place.get_data()
-            if self.__married and self.__marriage_place
-            else "",
+            "marriage": self.__marriage.get_data() if self.__married else "",
         }

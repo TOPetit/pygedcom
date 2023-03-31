@@ -6,8 +6,8 @@ def test_parse_00():
     result = parser.parse()
     assert len(result["individuals"]) == 1
     assert result["individuals"][0].get_name() == "John /Doe/"
-    assert str(result["individuals"][0].get_date_of_birth()) == "01 JAN 1900"
-    assert str(result["individuals"][0].get_date_of_death()) == "01 JAN 1970"
+    assert str(result["individuals"][0].get_birth().get_date()) == "01 JAN 1900"
+    assert str(result["individuals"][0].get_death().get_date()) == "01 JAN 1970"
 
 
 def test_parse_01():
@@ -20,7 +20,7 @@ def test_parse_04():
     parser = gedcom_parser.GedcomParser("test/samples/04_simple_date_formats.ged")
     result = parser.parse()
     assert len(result["individuals"]) == 2
-    assert str(result["individuals"][0].get_date_of_birth()) == "15 MAR 2023"
-    assert str(result["individuals"][0].get_date_of_death()) == "15 MAR 2043"
-    assert str(result["individuals"][1].get_date_of_birth()) == "MAR 2025"
-    assert str(result["individuals"][1].get_date_of_death()) == "MAR 2075"
+    assert str(result["individuals"][0].get_birth().get_date()) == "15 MAR 2023"
+    assert str(result["individuals"][0].get_death().get_date()) == "15 MAR 2043"
+    assert str(result["individuals"][1].get_birth().get_date()) == "MAR 2025"
+    assert str(result["individuals"][1].get_death().get_date()) == "MAR 2075"

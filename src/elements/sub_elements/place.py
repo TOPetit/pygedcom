@@ -38,6 +38,6 @@ class GedcomPlace(GedcomElement):
 
     def get_data(self) -> dict:
         return {
-            "infos": self.__place_infos,
+            "location": self.__place_infos,
             "map": self.__map.get_data() if self.__map is not None else None,
         }

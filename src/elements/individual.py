@@ -1,6 +1,5 @@
-from .sub_elements.date import GedcomDate
+from src.elements.sub_elements.commonEvent import GedcomCommonEvent
 from .element import GedcomElement
-from .family import GedcomFamily
 
 
 class GedcomIndividual(GedcomElement):
@@ -8,9 +7,27 @@ class GedcomIndividual(GedcomElement):
         super().__init__(level, tag, sub_elements)
         self.__xref = xref
         self.__name = self.find_sub_element("NAME")[0].value
-        self.__date_of_birth = self.__find_date_of_birth()
-        self.__date_of_death = self.__find_date_of_death()
+        self.__birth = self.__init_birth()
+        self.__death = self.__init_death()
         self.__sex = self.__find_sex()
+
+    def __init_birth(self) -> GedcomCommonEvent:
+        if self.find_sub_element("BIRT") != []:
+            birth = self.find_sub_element("BIRT")[0]
+            birth.__class__ = GedcomCommonEvent
+            birth.init_properties()
+            return birth
+        else:
+            return None
+
+    def __init_death(self) -> GedcomCommonEvent:
+        if self.find_sub_element("DEAT") != []:
+            death = self.find_sub_element("DEAT")[0]
+            death.__class__ = GedcomCommonEvent
+            death.init_properties()
+            return death
+        else:
+            return None
 
     def __find_sex(self):
         return (
@@ -19,38 +36,14 @@ class GedcomIndividual(GedcomElement):
             else None
         )
 
-    def __find_date_of_death(self) -> GedcomDate:
-        if (
-            self.find_sub_element("DEAT") != []
-            and self.find_sub_element("DEAT")[0].find_sub_element("DATE") != []
-        ):
-            date = self.find_sub_element("DEAT")[0].find_sub_element("DATE")[0]
-            date.__class__ = GedcomDate
-            date.init_properties()
-            return date
-        else:
-            return ""
-
-    def __find_date_of_birth(self) -> GedcomDate:
-        if (
-            self.find_sub_element("BIRT") != []
-            and self.find_sub_element("BIRT")[0].find_sub_element("DATE") != []
-        ):
-            date = self.find_sub_element("BIRT")[0].find_sub_element("DATE")[0]
-            date.__class__ = GedcomDate
-            date.init_properties()
-            return date
-        else:
-            return ""
-
     def get_name(self) -> str:
         return self.__name
 
-    def get_date_of_birth(self) -> GedcomDate:
-        return self.__date_of_birth
+    def get_birth(self) -> GedcomCommonEvent:
+        return self.__birth
 
-    def get_date_of_death(self) -> GedcomDate:
-        return self.__date_of_death
+    def get_death(self) -> GedcomCommonEvent:
+        return self.__death
 
     def get_xref(self) -> str:
         return self.__xref
@@ -70,10 +63,6 @@ class GedcomIndividual(GedcomElement):
             "first_name": self.get_first_name(),
             "last_name": self.get_last_name(),
             "sex": self.__sex,
-            "date_of_birth": self.__date_of_birth.get_data()
-            if self.__date_of_birth
-            else "",
-            "date_of_death": self.__date_of_death.get_data()
-            if self.__date_of_death
-            else "",
+            "birth": self.__birth.get_data() if self.__birth else "",
+            "death": self.__death.get_data() if self.__death else "",
         }
