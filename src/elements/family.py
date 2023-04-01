@@ -5,7 +5,7 @@ from .element import GedcomElement
 
 
 class GedcomFamily(GedcomElement):
-    """The family element.
+    """This class represents a family in the gedcom file.
     
     :param level: The level of the family.
     :type level: int

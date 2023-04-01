@@ -21,6 +21,7 @@ author = "Theo Petit"
 
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinxawesome_theme"
     # other extensions
 ]
 
@@ -31,5 +32,5 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = "alabaster"
+html_theme = "sphinxawesome_theme"
 html_static_path = ["_static"]

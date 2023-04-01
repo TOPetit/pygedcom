@@ -3,7 +3,19 @@ from ..element import GedcomElement
 
 
 class GedcomDate(GedcomElement):
-    """The Gedcom date element."""
+    """The Gedcom date element.
+    
+    :param level: The level of the Gedcom date element.
+    :type level: int
+    :param tag: The tag of the Gedcom date element.
+    :type tag: str
+    :param sub_elements: The sub elements of the Gedcom date element.
+    :type sub_elements: list
+    :param value: The value of the Gedcom date element, defaults to None
+    :type value: str, optional
+    :return: The Gedcom date element.
+    :rtype: GedcomDate
+    """
 
     def __init__(
         self,
@@ -12,17 +24,7 @@ class GedcomDate(GedcomElement):
         sub_elements: list,
         value: str = None,
     ):
-        """Initialize the Gedcom date element.
-
-        Args:
-            level (int): The level of the Gedcom date element.
-            tag (str): The tag of the Gedcom date element.
-            sub_elements (list): The sub elements of the Gedcom date element.
-            value (str, optional): The value of the Gedcom date element. Defaults to None.
-
-        Returns:
-            GedcomDate: The Gedcom date element.
-        """
+        """Initialize the Gedcom date element."""
         super().__init__(level, tag, sub_elements, value=value)
         self.init_properties()
 
@@ -33,8 +35,8 @@ class GedcomDate(GedcomElement):
     def __parse_value(self) -> tuple:
         """Parse the value of the Gedcom date element.
 
-        Returns:
-            tuple: The day, month and year of the Gedcom date element.
+        :return: The day, month and year of the Gedcom date element.
+        :rtype: tuple
         """
         if self.value == "":
             return None, None, None
@@ -65,11 +67,10 @@ class GedcomDate(GedcomElement):
     def __parse_date(self, date_string: str) -> tuple:
         """Parse the date string of the Gedcom date element.
 
-        Args:
-            date_string (str): The date string of the Gedcom date element.
-
-        Returns:
-            tuple: The day, month and year of the Gedcom date element.
+        :param date_string: The date string of the Gedcom date element.
+        :type date_string: str
+        :return: The day, month and year of the Gedcom date element.
+        :rtype: tuple
         """
         day = month = year = None
         date_string = date_string.strip()
@@ -97,8 +98,8 @@ class GedcomDate(GedcomElement):
     def __str__(self):
         """Return the string representation of the Gedcom date element.
 
-        Returns:
-            str: The string representation of the Gedcom date element.
+        :return: The string representation of the Gedcom date element.
+        :rtype: str
         """
         results = []
         if self.__day:
@@ -112,16 +113,16 @@ class GedcomDate(GedcomElement):
     def __repr__(self):
         """Return the string representation of the Gedcom date element.
 
-        Returns:
-            str: The string representation of the Gedcom date element.
+        :return: The string representation of the Gedcom date element.
+        :rtype: str
         """
         return self.__str__()
 
     def get_data(self) -> dict:
         """Return the data of the Gedcom date element. The result contains the day, month and year of the Gedcom date element.
 
-        Returns:
-            dict: The data of the Gedcom date element.
+        :return: The data of the Gedcom date element.
+        :rtype: dict
         """
         return {
             "day": self.__day,

@@ -3,7 +3,19 @@ from ..element import GedcomElement
 
 
 class GedcomPlace(GedcomElement):
-    """Class representing a place element."""
+    """Class representing a place element.
+    
+    :param level: The level of the place.
+    :type level: int
+    :param tag: The tag of the place.
+    :type tag: str
+    :param sub_elements: The sub elements of the place.
+    :type sub_elements: list
+    :param value: The value of the place, defaults to None
+    :type value: str, optional
+    :return: The place.
+    :rtype: GedcomPlace
+    """
 
     def __init__(
         self,
@@ -12,16 +24,7 @@ class GedcomPlace(GedcomElement):
         sub_elements: list,
         value: str = None,
     ):
-        """Initialize the place.
-
-        Args:
-            level (int): The level of the place.
-            tag (str): The tag of the place.
-            sub_elements (list): The sub elements of the place.
-            value (str, optional): The value of the place. Defaults to None.
-
-        Returns:
-            GedcomPlace: The place."""
+        """Initialize the place."""
         super().__init__(level, tag, sub_elements, value=value)
         self.init_properties()
 
@@ -33,8 +36,8 @@ class GedcomPlace(GedcomElement):
     def __find_map(self) -> GedcomMap:
         """Find the map of the place.
 
-        Returns:
-            GedcomMap: The map of the place. None if not found.
+        :return: The map of the place.
+        :rtype: GedcomMap
         """
         map_elements = self.find_sub_element("MAP")
         if map_elements != []:
@@ -47,32 +50,32 @@ class GedcomPlace(GedcomElement):
     def __parse_value(self) -> list:
         """Parse the value of the place.
 
-        Returns:
-            list: A list of locations such as city, region, country, etc...
+        :return: The parsed value of the place.
+        :rtype: list
         """
         return self.value.split(",")
 
     def __str__(self) -> str:
         """Return the string representation of the place.
 
-        Returns:
-            str: The string representation of the place.
+        :return: The string representation of the place.
+        :rtype: str
         """
         return " ".join(self.__place_infos)
 
     def __repr__(self) -> str:
         """Return the string representation of the place.
 
-        Returns:
-            str: The string representation of the place.
+        :return: The string representation of the place.
+        :rtype: str
         """
         return self.__str__()
 
     def get_data(self) -> dict:
         """Return the data of the place.
 
-        Returns:
-            dict: The data of the place.
+        :return: The data of the place.
+        :rtype: dict
         """
         return {
             "location": self.__place_infos,
