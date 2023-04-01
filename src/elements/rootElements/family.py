@@ -1,3 +1,4 @@
+from src.FormatException import FormatException, known_formats
 from src.elements.subElements.commonEvent import GedcomCommonEvent
 from src.elements.rootElements.rootElement import GedcomRootElement
 
@@ -24,8 +25,7 @@ class GedcomFamily(GedcomRootElement):
         self.__wife = self.__find_wife()
         self.__children = self.__find_children()
         self.__married = self.__find_are_married()
-        if self.__married:
-            self.__marriage = self.__find_marriage()
+        self.__marriage = self.__find_marriage()
 
     def __find_marriage(self) -> GedcomCommonEvent:
         """Find the marriage of the family.
@@ -114,16 +114,29 @@ class GedcomFamily(GedcomRootElement):
         """
         return [self.__husband, self.__wife]
 
-    def export(self):
+    def export(self, format="json", empty_fields=True) -> dict:
         """Get the data of the family. The result contains husband, wife, children, marriage status and marriage data.
 
+        :param format: The format of the export.
+        :type format: str
+        :param empty_fields: If empty fields should be exported.
+        :type empty_fields: bool
         :return: The data of the family.
         :rtype: dict
         """
-        return {
-            "husband": self.__husband,
-            "wife": self.__wife,
-            "children": self.__children,
-            "married": self.__married,
-            "marriage": self.__marriage.export() if self.__married else "",
-        }
+
+        if format not in known_formats:
+            raise FormatException("Format " + format + " is not supported.")
+        if format == "json":
+            export = {}
+            if empty_fields or self.__husband:
+                export["husband"] = self.__husband
+            if empty_fields or self.__wife:
+                export["wife"] = self.__wife
+            if empty_fields or self.__children:
+                export["children"] = self.__children
+            if empty_fields or self.__married:
+                export["married"] = self.__married
+            if empty_fields or self.__marriage:
+                export["marriage"] = self.__marriage.export() if self.__married else ""
+            return export

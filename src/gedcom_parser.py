@@ -6,6 +6,7 @@ from .elements.rootElements.object import GedcomObject
 from .elements.rootElements.repository import GedcomRepository
 from .elements.rootElements.source import GedcomSource
 from .elements.element import GedcomElement
+from .FormatException import FormatException
 
 
 class GedcomParser:
@@ -191,38 +192,57 @@ class GedcomParser:
             "repositories": len(self.repositories),
         }
 
-    def export(self, format: str = "json") -> str:
+    def export(self, format: str = "json", empty_fields=True) -> str:
         """Export the GEDCOM file to another format.
 
         :param format: The format to export to. Default is "json".
         :type format: str
+        :param empty_fields: If True, empty fields will be exported. Default is True.
+        :type empty_fields: bool
         :return: The exported file.
         :rtype: str
         """
+        if format not in ["json"]:
+            raise FormatException("Format " + format + " is not supported.")
         if format == "json":
-            data = {
-                "individuals": {},
-                "families": {},
-                "sources": {},
-                "objects": {},
-                "repositories": {},
-            }
-            for individual in self.individuals:
-                data["individuals"][individual.get_xref()] = individual.export()
-
-            for family in self.families:
-                data["families"][family.get_xref()] = family.export()
-
-            for source in self.sources:
-                data["sources"][source.get_xref()] = source.export()
-
-            for object in self.objects:
-                data["objects"][object.get_xref()] = object.export()
-
-            for repository in self.repositories:
-                data["repositories"][repository.get_xref()] = repository.export()
-
-            return json.dumps(data, indent=4, ensure_ascii=False)
+            export = {}
+            if empty_fields or self.head:
+                export["head"] = (
+                    self.head.export(format="json", empty_fields=empty_fields)
+                    if self.head
+                    else ""
+                )
+            if empty_fields or self.individuals:
+                export["individuals"] = {}
+                for individual in self.individuals:
+                    export["individuals"][individual.get_xref()] = individual.export(
+                        format="json", empty_fields=empty_fields
+                    )
+            if empty_fields or self.families:
+                export["families"] = {}
+                for family in self.families:
+                    export["families"][family.get_xref()] = family.export(
+                        format="json", empty_fields=empty_fields
+                    )
+            if empty_fields or self.sources:
+                export["sources"] = {}
+                for source in self.sources:
+                    export["sources"][source.get_xref()] = source.export(
+                        format="json", empty_fields=empty_fields
+                    )
+            if empty_fields or self.objects:
+                export["objects"] = {}
+                for object in self.objects:
+                    export["objects"][object.get_xref()] = object.export(
+                        format="json", empty_fields=empty_fields
+                    )
+            if empty_fields or self.repositories:
+                export["repositories"] = {}
+                for repository in self.repositories:
+                    export["repositories"][repository.get_xref()] = repository.export(
+                        format="json", empty_fields=empty_fields
+                    )
+            return json.dumps(export, indent=4, ensure_ascii=False)
 
     def get_parents(self, individual: GedcomIndividual) -> list:
         """Get the parents of an individual.

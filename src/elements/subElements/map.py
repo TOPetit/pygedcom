@@ -1,3 +1,4 @@
+from src.FormatException import FormatException, known_formats
 from ..element import GedcomElement
 
 
@@ -86,13 +87,24 @@ class GedcomMap(GedcomElement):
         """
         return self.__str__()
 
-    def export(self) -> dict:
+    def export(self, format="json", empty_fields=True) -> dict:
         """Get the data of the Gedcom map element. The result contains the latitude and longitude.
 
+        :param format: The format of the export, defaults to "json"
+        :type format: str, optional
+        :param empty_fields: If True, the empty fields are exported, defaults to True
+        :type empty_fields: bool, optional
         :return: The data of the Gedcom map element.
         :rtype: dict
         """
-        return {
-            "latitude": self.__latitude,
-            "longitude": self.__longitude,
-        }
+
+        if format not in known_formats:
+            raise FormatException("Format " + format + " is not supported.")
+
+        if format == "json":
+            export = {}
+            if empty_fields or self.__latitude:
+                export["latitude"] = self.__latitude
+            if empty_fields or self.__longitude:
+                export["longitude"] = self.__longitude
+            return export

@@ -1,3 +1,4 @@
+from src.FormatException import FormatException, known_formats
 from src.elements.rootElements.rootElement import GedcomRootElement
 
 
@@ -21,10 +22,21 @@ class GedcomSource(GedcomRootElement):
         """Initialize the Gedcom source."""
         super().__init__(level, xref, tag, sub_elements)
 
-    def export(self):
+    def export(self, format="json", empty_fields=True):
         """Get the data of the Gedcom source.
 
+        :param format: The format of the export.
+        :type format: str
+        :param empty_fields: If empty fields should be exported.
+        :type empty_fields: bool
         :return: The data of the Gedcom source.
         :rtype: dict
         """
-        return {}
+
+        if format not in known_formats:
+            raise FormatException("Format " + format + " is not supported.")
+
+        if format == "json":
+            export = {}
+
+        return export

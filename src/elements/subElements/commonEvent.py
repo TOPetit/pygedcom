@@ -1,3 +1,4 @@
+from src.FormatException import FormatException, known_formats
 from src.elements.subElements.date import GedcomDate
 from src.elements.subElements.place import GedcomPlace
 from ..element import GedcomElement
@@ -94,13 +95,23 @@ class GedcomCommonEvent(GedcomElement):
         """
         return self.__str__()
 
-    def export(self):
+    def export(self, format="json", empty_fields=True):
         """Get de data of the common event. Used to export the data to JSON.
 
+        :param format: The format of the data, defaults to "json"
+        :type format: str, optional
+        :param empty_fields: If the empty fields should be exported, defaults to True
+        :type empty_fields: bool, optional
         :return: The data of the common event.
         :rtype: dict
         """
-        return {
-            "date": self.__date.export() if self.__date else None,
-            "place": self.__place.export() if self.__place else None,
-        }
+
+        if format not in known_formats:
+            raise FormatException("Format " + format + " is not supported.")
+        if format == "json":
+            export = {}
+            if empty_fields or self.__date:
+                export["date"] = self.__date.export() if self.__date else ""
+            if empty_fields or self.__place:
+                export["place"] = self.__place.export() if self.__place else ""
+            return export

@@ -1,3 +1,4 @@
+from src.FormatException import FormatException, known_formats
 from src.elements.rootElements.rootElement import GedcomRootElement
 
 
@@ -60,10 +61,23 @@ class GedcomObject(GedcomRootElement):
         """
         return self.__format
 
-    def export(self):
+    def export(self, format="json", empty_fields=True) -> dict:
         """Get the data of the Gedcom object.
 
+        :param format: The format of the export.
+        :type format: str
+        :param empty_fields: If empty fields should be exported.
+        :type empty_fields: bool
         :return: The data of the Gedcom object.
         :rtype: dict
         """
-        return {"file": self.__file, "format": self.__format}
+        if format not in known_formats:
+            raise FormatException("Format " + format + " is not supported.")
+        if format == "json":
+            export = {"file": self.__file, "format": self.__format}
+            export = {}
+            if empty_fields or self.__file != "":
+                export["file"] = self.__file
+            if empty_fields or self.__format != "":
+                export["format"] = self.__format
+            return export

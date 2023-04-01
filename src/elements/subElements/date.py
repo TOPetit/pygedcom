@@ -1,4 +1,5 @@
 import re
+from src.FormatException import FormatException, known_formats
 from ..element import GedcomElement
 
 
@@ -118,14 +119,25 @@ class GedcomDate(GedcomElement):
         """
         return self.__str__()
 
-    def export(self) -> dict:
+    def export(self, format="json", empty_fields=True) -> dict:
         """Return the data of the Gedcom date element. The result contains the day, month and year of the Gedcom date element.
 
+        :param format: The format of the export, defaults to "json"
+        :type format: str, optional
+        :param empty_fields: If True, the empty fields are exported, defaults to True
+        :type empty_fields: bool, optional
         :return: The data of the Gedcom date element.
         :rtype: dict
         """
-        return {
-            "day": self.__day,
-            "month": self.__month,
-            "year": self.__year,
-        }
+
+        if format not in known_formats:
+            raise FormatException("Format " + format + " is not supported.")
+        if format == "json":
+            export = {}
+            if empty_fields or self.__day:
+                export["day"] = self.__day
+            if empty_fields or self.__month:
+                export["month"] = self.__month
+            if empty_fields or self.__year:
+                export["year"] = self.__year
+            return export
