@@ -1,4 +1,4 @@
-from .element import GedcomElement
+from ..element import GedcomElement
 
 
 # TODO: implement the Gedcom repository element.

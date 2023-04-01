@@ -1,10 +1,10 @@
 import json
-from .elements.family import GedcomFamily
-from .elements.head import GedcomHead
-from .elements.individual import GedcomIndividual
-from .elements.object import GedcomObject
-from .elements.repository import GedcomRepository
-from .elements.source import GedcomSource
+from .elements.rootElements.family import GedcomFamily
+from .elements.rootElements.head import GedcomHead
+from .elements.rootElements.individual import GedcomIndividual
+from .elements.rootElements.object import GedcomObject
+from .elements.rootElements.repository import GedcomRepository
+from .elements.rootElements.source import GedcomSource
 from .elements.element import GedcomElement
 
 

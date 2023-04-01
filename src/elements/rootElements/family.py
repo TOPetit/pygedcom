@@ -1,7 +1,7 @@
 from src.elements.sub_elements.commonEvent import GedcomCommonEvent
 from src.elements.sub_elements.date import GedcomDate
 from src.elements.sub_elements.place import GedcomPlace
-from .element import GedcomElement
+from ..element import GedcomElement
 
 
 class GedcomFamily(GedcomElement):

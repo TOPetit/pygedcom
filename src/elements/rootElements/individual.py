@@ -1,5 +1,5 @@
 from src.elements.sub_elements.commonEvent import GedcomCommonEvent
-from .element import GedcomElement
+from ..element import GedcomElement
 
 
 class GedcomIndividual(GedcomElement):
