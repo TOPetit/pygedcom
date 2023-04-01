@@ -1,8 +1,9 @@
 from ..element import GedcomElement
 
+
 class GedcomRootElement(GedcomElement):
     """Root element of the Gedcom file.
-    
+
     :param level: The level of the element.
     :type level: int
     :param xref: The xref of the element.

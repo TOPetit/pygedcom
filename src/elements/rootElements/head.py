@@ -3,7 +3,7 @@ from src.elements.rootElements.rootElement import GedcomRootElement
 
 class GedcomHead(GedcomRootElement):
     """Class for the HEAD element.
-    
+
     :param level: The level of the HEAD element.
     :type level: int
     :param tag: The tag of the HEAD element.

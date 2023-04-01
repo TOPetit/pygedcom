@@ -3,7 +3,7 @@ from ..element import GedcomElement
 
 class GedcomMap(GedcomElement):
     """Class representing a Gedcom map element.
-    
+
     :param level: The level of the Gedcom map element.
     :type level: int
     :param tag: The tag of the Gedcom map element.
@@ -86,7 +86,7 @@ class GedcomMap(GedcomElement):
         """
         return self.__str__()
 
-    def get_data(self) -> dict:
+    def export(self) -> dict:
         """Get the data of the Gedcom map element. The result contains the latitude and longitude.
 
         :return: The data of the Gedcom map element.

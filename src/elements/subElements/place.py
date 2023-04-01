@@ -4,7 +4,7 @@ from ..element import GedcomElement
 
 class GedcomPlace(GedcomElement):
     """Class representing a place element.
-    
+
     :param level: The level of the place.
     :type level: int
     :param tag: The tag of the place.
@@ -71,7 +71,7 @@ class GedcomPlace(GedcomElement):
         """
         return self.__str__()
 
-    def get_data(self) -> dict:
+    def export(self) -> dict:
         """Return the data of the place.
 
         :return: The data of the place.
@@ -79,5 +79,5 @@ class GedcomPlace(GedcomElement):
         """
         return {
             "location": self.__place_infos,
-            "map": self.__map.get_data() if self.__map is not None else None,
+            "map": self.__map.export() if self.__map is not None else None,
         }

@@ -1,8 +1,9 @@
 # TODO: make the parameters private
 
+
 class GedcomElement:
     """Class for representing a Gedcom element.
-    
+
     :param level: The level of the Gedcom element.
     :type level: int
     :param tag: The tag of the Gedcom element.

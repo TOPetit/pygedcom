@@ -1,9 +1,10 @@
 from src.elements.subElements.commonEvent import GedcomCommonEvent
 from src.elements.rootElements.rootElement import GedcomRootElement
 
+
 class GedcomIndividual(GedcomRootElement):
     """This class represents an individual in the gedcom file.
-    
+
     :param level: The level of the individual.
     :type level: int
     :param xref: The xref of the individual.
@@ -112,7 +113,7 @@ class GedcomIndividual(GedcomRootElement):
         """
         return self.get_first_name() + " " + self.get_last_name()
 
-    def get_data(self):
+    def export(self):
         """Get the data of the individual. The result contains name, first_name, last_name, sex, birth and death.
 
         :return: The data of the individual.
@@ -123,6 +124,6 @@ class GedcomIndividual(GedcomRootElement):
             "first_name": self.get_first_name(),
             "last_name": self.get_last_name(),
             "sex": self.__sex,
-            "birth": self.__birth.get_data() if self.__birth else "",
-            "death": self.__death.get_data() if self.__death else "",
+            "birth": self.__birth.export() if self.__birth else "",
+            "death": self.__death.export() if self.__death else "",
         }

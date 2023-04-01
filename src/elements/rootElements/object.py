@@ -1,8 +1,9 @@
 from src.elements.rootElements.rootElement import GedcomRootElement
 
+
 class GedcomObject(GedcomRootElement):
     """This class represents an object in the gedcom file.
-    
+
     :param level: The level of the Gedcom object.
     :type level: int
     :param xref: The xref of the Gedcom object.
@@ -59,7 +60,7 @@ class GedcomObject(GedcomRootElement):
         """
         return self.__format
 
-    def get_data(self):
+    def export(self):
         """Get the data of the Gedcom object.
 
         :return: The data of the Gedcom object.

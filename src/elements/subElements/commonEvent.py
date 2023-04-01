@@ -5,7 +5,7 @@ from ..element import GedcomElement
 
 class GedcomCommonEvent(GedcomElement):
     """Common event class. It can be a birth, death, marriage, etc... Every even with a date and a place.
-    
+
     :param level: The level of the common event.
     :type level: int
     :param tag: The tag of the common event.
@@ -94,13 +94,13 @@ class GedcomCommonEvent(GedcomElement):
         """
         return self.__str__()
 
-    def get_data(self):
+    def export(self):
         """Get de data of the common event. Used to export the data to JSON.
-        
+
         :return: The data of the common event.
         :rtype: dict
         """
         return {
-            "date": self.__date.get_data() if self.__date else None,
-            "place": self.__place.get_data() if self.__place else None,
+            "date": self.__date.export() if self.__date else None,
+            "place": self.__place.export() if self.__place else None,
         }

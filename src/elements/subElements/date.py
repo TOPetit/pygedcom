@@ -4,7 +4,7 @@ from ..element import GedcomElement
 
 class GedcomDate(GedcomElement):
     """The Gedcom date element.
-    
+
     :param level: The level of the Gedcom date element.
     :type level: int
     :param tag: The tag of the Gedcom date element.
@@ -118,7 +118,7 @@ class GedcomDate(GedcomElement):
         """
         return self.__str__()
 
-    def get_data(self) -> dict:
+    def export(self) -> dict:
         """Return the data of the Gedcom date element. The result contains the day, month and year of the Gedcom date element.
 
         :return: The data of the Gedcom date element.

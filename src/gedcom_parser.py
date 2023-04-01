@@ -13,7 +13,7 @@ class GedcomParser:
 
     Use this class to initialize the parsing of a GEDCOM file.
     You can then verify, parse, access the elements and export the data.
-    
+
     :param path: The path to the GEDCOM file.
     :type path: str
     :return: The GEDCOM parser.
@@ -109,7 +109,7 @@ class GedcomParser:
         elif parsed_line["tag"] == "HEAD":
             self.head = GedcomHead(
                 parsed_line["level"],
-                "", # No xref for HEAD
+                "",  # No xref for HEAD
                 parsed_line["tag"],
                 element_lines,
             )
@@ -208,19 +208,19 @@ class GedcomParser:
                 "repositories": {},
             }
             for individual in self.individuals:
-                data["individuals"][individual.get_xref()] = individual.get_data()
+                data["individuals"][individual.get_xref()] = individual.export()
 
             for family in self.families:
-                data["families"][family.get_xref()] = family.get_data()
+                data["families"][family.get_xref()] = family.export()
 
             for source in self.sources:
-                data["sources"][source.get_xref()] = source.get_data()
+                data["sources"][source.get_xref()] = source.export()
 
             for object in self.objects:
-                data["objects"][object.get_xref()] = object.get_data()
+                data["objects"][object.get_xref()] = object.export()
 
             for repository in self.repositories:
-                data["repositories"][repository.get_xref()] = repository.get_data()
+                data["repositories"][repository.get_xref()] = repository.export()
 
             return json.dumps(data, indent=4, ensure_ascii=False)
 

@@ -1,9 +1,10 @@
 from src.elements.rootElements.rootElement import GedcomRootElement
 
+
 # TODO: Implement the Gedcom source class.
 class GedcomSource(GedcomRootElement):
     """The Gedcom source element.
-    
+
     :param level: The level of the Gedcom source.
     :type level: int
     :param xref: The xref of the Gedcom source.
@@ -20,7 +21,7 @@ class GedcomSource(GedcomRootElement):
         """Initialize the Gedcom source."""
         super().__init__(level, xref, tag, sub_elements)
 
-    def get_data(self):
+    def export(self):
         """Get the data of the Gedcom source.
 
         :return: The data of the Gedcom source.

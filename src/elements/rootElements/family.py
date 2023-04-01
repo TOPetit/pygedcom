@@ -4,7 +4,7 @@ from src.elements.rootElements.rootElement import GedcomRootElement
 
 class GedcomFamily(GedcomRootElement):
     """This class represents a family in the gedcom file.
-    
+
     :param level: The level of the family.
     :type level: int
     :param xref: The xref of the family.
@@ -114,7 +114,7 @@ class GedcomFamily(GedcomRootElement):
         """
         return [self.__husband, self.__wife]
 
-    def get_data(self):
+    def export(self):
         """Get the data of the family. The result contains husband, wife, children, marriage status and marriage data.
 
         :return: The data of the family.
@@ -125,5 +125,5 @@ class GedcomFamily(GedcomRootElement):
             "wife": self.__wife,
             "children": self.__children,
             "married": self.__married,
-            "marriage": self.__marriage.get_data() if self.__married else "",
+            "marriage": self.__marriage.export() if self.__married else "",
         }
