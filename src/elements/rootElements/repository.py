@@ -1,8 +1,7 @@
-from ..element import GedcomElement
-
+from src.elements.rootElements.rootElement import GedcomRootElement
 
 # TODO: implement the Gedcom repository element.
-class GedcomRepository(GedcomElement):
+class GedcomRepository(GedcomRootElement):
     """This class represents a repository in the gedcom file.
     
     :param level: The level of the Gedcom repository.
@@ -19,16 +18,7 @@ class GedcomRepository(GedcomElement):
 
     def __init__(self, level: int, xref: str, tag: str, sub_elements: list):
         """Initialize the Gedcom repository."""
-        super().__init__(level, tag, sub_elements)
-        self.__xref = xref
-
-    def get_xref(self) -> str:
-        """Get the xref of the Gedcom repository.
-
-        :return: The xref of the Gedcom repository.
-        :rtype: str
-        """
-        return self.__xref
+        super().__init__(level, xref, tag, sub_elements)
 
     def get_data(self):
         """Get the data of the Gedcom repository. Result contains {}.

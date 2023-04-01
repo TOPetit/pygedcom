@@ -1,4 +1,4 @@
-from src.elements.sub_elements.map import GedcomMap
+from src.elements.subElements.map import GedcomMap
 from ..element import GedcomElement
 
 

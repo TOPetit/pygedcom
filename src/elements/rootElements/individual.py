@@ -1,8 +1,7 @@
-from src.elements.sub_elements.commonEvent import GedcomCommonEvent
-from ..element import GedcomElement
+from src.elements.subElements.commonEvent import GedcomCommonEvent
+from src.elements.rootElements.rootElement import GedcomRootElement
 
-
-class GedcomIndividual(GedcomElement):
+class GedcomIndividual(GedcomRootElement):
     """This class represents an individual in the gedcom file.
     
     :param level: The level of the individual.
@@ -19,8 +18,7 @@ class GedcomIndividual(GedcomElement):
 
     def __init__(self, level: int, xref: str, tag: str, sub_elements: list):
         """Initialize the individual."""
-        super().__init__(level, tag, sub_elements)
-        self.__xref = xref
+        super().__init__(level, xref, tag, sub_elements)
         self.__name = self.find_sub_element("NAME")[0].value
         self.__birth = self.__init_birth()
         self.__death = self.__init_death()
@@ -89,14 +87,6 @@ class GedcomIndividual(GedcomElement):
         :rtype: GedcomCommonEvent
         """
         return self.__death
-
-    def get_xref(self) -> str:
-        """Get the xref of the individual.
-
-        :return: The xref of the individual.
-        :rtype: str
-        """
-        return self.__xref
 
     def get_first_name(self) -> str:
         """Get the first name of the individual.

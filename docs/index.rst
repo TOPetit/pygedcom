@@ -7,9 +7,17 @@ Welcome to gedcom-parser's documentation!
 =========================================
 
 .. toctree::
-   :maxdepth: 3
-   :caption: Contents:
+   :maxdepth: 2
+   :caption: Introduction:
 
    ./sources/getting_started.rst
    ./sources/parsing.rst
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Sources documentation
+
    ./sources/gedcomParser.rst
+   ./sources/gedcomElement.rst
+   ./sources/gedcomRootElement.rst
+   ./sources/gedcomSubElement.rst

@@ -1,5 +1,5 @@
-from src.elements.sub_elements.date import GedcomDate
-from src.elements.sub_elements.place import GedcomPlace
+from src.elements.subElements.date import GedcomDate
+from src.elements.subElements.place import GedcomPlace
 from ..element import GedcomElement
 
 

@@ -1,7 +1,6 @@
-from ..element import GedcomElement
+from src.elements.rootElements.rootElement import GedcomRootElement
 
-
-class GedcomObject(GedcomElement):
+class GedcomObject(GedcomRootElement):
     """This class represents an object in the gedcom file.
     
     :param level: The level of the Gedcom object.
@@ -18,8 +17,7 @@ class GedcomObject(GedcomElement):
 
     def __init__(self, level: int, xref: str, tag: str, sub_elements: list):
         """Initialize the Gedcom object."""
-        super().__init__(level, tag, sub_elements)
-        self.__xref = xref
+        super().__init__(level, xref, tag, sub_elements)
         self.__file = self.__find_file()
         self.__format = self.__find_format()
 
@@ -44,14 +42,6 @@ class GedcomObject(GedcomElement):
             return self.find_sub_element("FORM")[0].value
         else:
             return ""
-
-    def get_xref(self) -> str:
-        """Get the xref of the Gedcom object.
-
-        :return: The xref of the Gedcom object.
-        :rtype: str
-        """
-        return self.__xref
 
     def get_file(self) -> str:
         """Get the file path of the Gedcom object.

@@ -1,7 +1,7 @@
-from ..element import GedcomElement
+from src.elements.rootElements.rootElement import GedcomRootElement
 
 
-class GedcomHead(GedcomElement):
+class GedcomHead(GedcomRootElement):
     """Class for the HEAD element.
     
     :param level: The level of the HEAD element.
@@ -14,6 +14,6 @@ class GedcomHead(GedcomElement):
     :rtype: GedcomHead
     """
 
-    def __init__(self, level: int, tag: str, sub_elements: list):
+    def __init__(self, level: int, xref: str, tag: str, sub_elements: list):
         """Initialize the HEAD element."""
-        super().__init__(level, tag, sub_elements)
+        super().__init__(level, xref, tag, sub_elements)

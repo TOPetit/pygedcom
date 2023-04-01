@@ -109,6 +109,7 @@ class GedcomParser:
         elif parsed_line["tag"] == "HEAD":
             self.head = GedcomHead(
                 parsed_line["level"],
+                "", # No xref for HEAD
                 parsed_line["tag"],
                 element_lines,
             )

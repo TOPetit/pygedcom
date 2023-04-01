@@ -1,10 +1,8 @@
-from src.elements.sub_elements.commonEvent import GedcomCommonEvent
-from src.elements.sub_elements.date import GedcomDate
-from src.elements.sub_elements.place import GedcomPlace
-from ..element import GedcomElement
+from src.elements.subElements.commonEvent import GedcomCommonEvent
+from src.elements.rootElements.rootElement import GedcomRootElement
 
 
-class GedcomFamily(GedcomElement):
+class GedcomFamily(GedcomRootElement):
     """This class represents a family in the gedcom file.
     
     :param level: The level of the family.
@@ -21,8 +19,7 @@ class GedcomFamily(GedcomElement):
 
     def __init__(self, level: int, xref: str, tag: str, sub_elements: list):
         """Initialize the family."""
-        super().__init__(level, tag, sub_elements)
-        self.__xref = xref
+        super().__init__(level, xref, tag, sub_elements)
         self.__husband = self.__find_husband()
         self.__wife = self.__find_wife()
         self.__children = self.__find_children()
@@ -84,14 +81,6 @@ class GedcomFamily(GedcomElement):
         :rtype: bool
         """
         return self.find_sub_element("MARR") != []
-
-    def get_xref(self) -> str:
-        """Get the xref of the family.
-
-        :return: The xref of the family.
-        :rtype: str
-        """
-        return self.__xref
 
     def get_husband(self) -> str:
         """Get the husband of the family.
