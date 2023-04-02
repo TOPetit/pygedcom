@@ -31,11 +31,7 @@ class GedcomDate(GedcomElement):
 
     def init_properties(self):
         """Initialize the properties of the Gedcom date element."""
-        (
-            self.__export_day,
-            self.__export_month,
-            self.__export_year,
-        ) = self.__parse_value()
+        self.__parse_value()
 
     def __parse_value(self) -> tuple:
         """Parse the value of the Gedcom date element.
@@ -43,31 +39,80 @@ class GedcomDate(GedcomElement):
         :return: The day, month and year of the Gedcom date element.
         :rtype: tuple
         """
-        if self.value == "":
-            return None, None, None
         if self.value.startswith("ABT"):
-            return self.__parse_date(self.value[4:])
-        if self.value.startswith("BEF"):
-            return self.__parse_date(self.value[4:])
-        if self.value.startswith("AFT"):
-            return self.__parse_date(self.value[4:])
-        if self.value.startswith("CAL"):
-            return self.__parse_date(self.value[4:])
-        if self.value.startswith("EST"):
-            return self.__parse_date(self.value[4:])
-        if self.value.startswith("INT"):
-            return self.__parse_date(self.value[4:])
-        if self.value.startswith("TO"):
-            return self.__parse_date(self.value[3:])
-        if self.value.startswith("FROM"):
-            # TODO Implement 2 dates format
-            return None, None, None
-        if self.value.startswith("BET"):
-            # TODO Implement 2 dates format
-            return None, None, None
-        # TODO Implement 2 dates format with OR
+            self.__export_tag = "ABT"
+            (
+                self.__export_day,
+                self.__export_month,
+                self.__export_year,
+            ) = self.__parse_date(self.value[4:])
+        elif self.value.startswith("BEF"):
+            self.__export_tag = "BEF"
+            (
+                self.__export_day,
+                self.__export_month,
+                self.__export_year,
+            ) = self.__parse_date(self.value[4:])
+        elif self.value.startswith("AFT"):
+            self.__export_tag = "AFT"
+            (
+                self.__export_day,
+                self.__export_month,
+                self.__export_year,
+            ) = self.__parse_date(self.value[4:])
+        elif self.value.startswith("CAL"):
+            self.__export_tag = "CAL"
+            (
+                self.__export_day,
+                self.__export_month,
+                self.__export_year,
+            ) = self.__parse_date(self.value[4:])
+        elif self.value.startswith("EST"):
+            self.__export_tag = "EST"
+            (
+                self.__export_day,
+                self.__export_month,
+                self.__export_year,
+            ) = self.__parse_date(self.value[4:])
+        elif self.value.startswith("INT"):
+            self.__export_tag = "INT"
+            (
+                self.__export_day,
+                self.__export_month,
+                self.__export_year,
+            ) = self.__parse_date(self.value[4:])
+        elif self.value.startswith("TO"):
+            self.__export_tag = "TO"
+            (
+                self.__export_day,
+                self.__export_month,
+                self.__export_year,
+            ) = self.__parse_date(self.value[3:])
+        elif self.value.startswith("FROM"):
+            self.__export_tag = "FROM"
+            (
+                self.__export_day,
+                self.__export_month,
+                self.__export_year,
+            ) = self.__parse_date(self.value[5:])
+        elif self.value.startswith("BET"):
+            self.__export_tag = "BET"
+            (
+                self.__export_day,
+                self.__export_month,
+                self.__export_year,
+            ) = self.__parse_date(self.value[4:])
+            (
+                self.__export_day1,
+                self.__export_month1,
+                self.__export_year1,
+            ) = self.__parse_date(self.value.split("AND")[1][1:])
         else:
-            return self.__parse_date(self.value)
+            (
+                self.__export_day,
+                self.__export_month,
+                self.__export_year,
+            ) = self.__parse_date(self.value)
 
     def __parse_date(self, date_string: str) -> tuple:
         """Parse the date string of the Gedcom date element.
@@ -106,13 +151,26 @@ class GedcomDate(GedcomElement):
         :return: The string representation of the Gedcom date element.
         :rtype: str
         """
-        results = []
+        results = [self.__export_tag] if hasattr(self, "__export_tag") else []
         if self.__export_day:
             results.append(self.__export_day)
         if self.__export_month:
             results.append(self.__export_month)
         if self.__export_year:
             results.append(self.__export_year)
+
+        if (
+            hasattr(self, "__export_day1")
+            or hasattr(self, "__export_month1")
+            or hasattr(self, "__export_year1")
+        ):
+            results.append("AND")
+        if hasattr(self, "__export_day1"):
+            results.append(self.__export_day1)
+        if hasattr(self, "__export_month1"):
+            results.append(self.__export_month1)
+        if hasattr(self, "__export_year1"):
+            results.append(self.__export_year1)
         return " ".join(results) if results != [] else ""
 
     def __repr__(self):
