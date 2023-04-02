@@ -107,6 +107,7 @@ class GedcomSource(GedcomRootElement):
         if note != []:
             content = note[0].find_sub_element("CONT")
             if content != []:
+                # TODO: note are still ugly.
                 return re.sub(
                     rtf_pattern, "", " ".join([cont.value for cont in content])
                 )
