@@ -2,7 +2,6 @@ from src.FormatException import FormatException, known_formats
 from src.elements.rootElements.rootElement import GedcomRootElement
 
 
-# TODO: implement the Gedcom repository element.
 class GedcomRepository(GedcomRootElement):
     """This class represents a repository in the gedcom file.
 
@@ -21,3 +20,31 @@ class GedcomRepository(GedcomRootElement):
     def __init__(self, level: int, xref: str, tag: str, sub_elements: list):
         """Initialize the Gedcom repository."""
         super().__init__(level, xref, tag, sub_elements)
+        self.__export_name = self.__find_name()
+
+    def __find_name(self) -> str:
+        """Find the name of the repository.
+
+        :return: The name of the repository.
+        :rtype: str
+        """
+        name = self.find_sub_element("NAME")
+        if name != []:
+            return name[0].value
+        return ""
+
+    def get_name(self) -> str:
+        """Get the name of the repository.
+
+        :return: The name of the repository.
+        :rtype: str
+        """
+        return self.__export_name
+
+    def __str__(self) -> str:
+        """Get the string representation of the repository.
+
+        :return: The string representation of the repository.
+        :rtype: str
+        """
+        return f"Repository: {self.__export_name}"
