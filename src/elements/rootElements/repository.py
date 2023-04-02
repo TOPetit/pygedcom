@@ -30,7 +30,7 @@ class GedcomRepository(GedcomRootElement):
         """
         name = self.find_sub_element("NAME")
         if name != []:
-            return name[0].value
+            return name[0].get_value()
         return ""
 
     def get_name(self) -> str:

@@ -54,7 +54,23 @@ class GedcomPlace(GedcomElement):
         :return: The parsed value of the place.
         :rtype: list
         """
-        return self.value.split(",")
+        return self.get_value().split(",")
+
+    def get_export_place_infos(self) -> list:
+        """Return the place infos.
+
+        :return: The place infos.
+        :rtype: list
+        """
+        return self.__export_place_infos
+
+    def get_export_map(self) -> GedcomMap:
+        """Return the map of the place.
+
+        :return: The map of the place.
+        :rtype: GedcomMap
+        """
+        return self.__export_map
 
     def __str__(self) -> str:
         """Return the string representation of the place.

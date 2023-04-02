@@ -41,7 +41,7 @@ class GedcomMap(GedcomElement):
         """
         latitude = self.find_sub_element("LATI")
         if latitude != []:
-            return latitude[0].value
+            return latitude[0].get_value()
         return None
 
     def __find_longitude(self) -> str:
@@ -52,7 +52,7 @@ class GedcomMap(GedcomElement):
         """
         longitude = self.find_sub_element("LONG")
         if longitude != []:
-            return longitude[0].value
+            return longitude[0].get_value()
         return None
 
     def get_latitude(self) -> str:

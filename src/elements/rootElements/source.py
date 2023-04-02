@@ -36,7 +36,7 @@ class GedcomSource(GedcomRootElement):
         """
         quality = self.find_sub_element("QUAY")
         if quality != []:
-            return quality[0].value
+            return quality[0].get_value()
         return ""
 
     def __find_title(self):
@@ -47,7 +47,7 @@ class GedcomSource(GedcomRootElement):
         """
         title = self.find_sub_element("ABBR")
         if title != []:
-            return title[0].value
+            return title[0].get_value()
         return ""
 
     def __find_type(self):
@@ -58,7 +58,7 @@ class GedcomSource(GedcomRootElement):
         """
         type = self.find_sub_element("TYPE")
         if type != []:
-            return type[0].value
+            return type[0].get_value()
         return ""
 
     def __find_object(self):
@@ -69,7 +69,7 @@ class GedcomSource(GedcomRootElement):
         """
         object = self.find_sub_element("OBJE")
         if object != []:
-            return object[0].value
+            return object[0].get_value()
         return ""
 
     def __find_repo(self):
@@ -80,7 +80,7 @@ class GedcomSource(GedcomRootElement):
         """
         repo = self.find_sub_element("REPO")
         if repo != []:
-            return repo[0].value
+            return repo[0].get_value()
         return ""
 
     def __find_media_type(self):
@@ -93,7 +93,7 @@ class GedcomSource(GedcomRootElement):
         if caln != []:
             media_type = caln[0].find_sub_element("MEDI")
             if media_type != []:
-                return media_type[0].value
+                return media_type[0].get_value()
         return ""
 
     def __find_note(self):
@@ -109,7 +109,7 @@ class GedcomSource(GedcomRootElement):
             if content != []:
                 # TODO: notes are still ugly.
                 return re.sub(
-                    rtf_pattern, "", " ".join([cont.value for cont in content])
+                    rtf_pattern, "", " ".join([cont.get_value() for cont in content])
                 )
         return ""
 

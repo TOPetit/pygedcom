@@ -30,7 +30,7 @@ class GedcomObject(GedcomRootElement):
         :rtype: str
         """
         if self.find_sub_element("FILE") != []:
-            return self.find_sub_element("FILE")[0].value
+            return self.find_sub_element("FILE")[0].get_value()
         else:
             return ""
 
@@ -41,7 +41,7 @@ class GedcomObject(GedcomRootElement):
         :rtype: str
         """
         if self.find_sub_element("FORM") != []:
-            return self.find_sub_element("FORM")[0].value
+            return self.find_sub_element("FORM")[0].get_value()
         else:
             return ""
 

@@ -48,7 +48,7 @@ class GedcomFamily(GedcomRootElement):
         :rtype: str
         """
         if self.find_sub_element("HUSB") != []:
-            return self.find_sub_element("HUSB")[0].value
+            return self.find_sub_element("HUSB")[0].get_value()
         else:
             return ""
 
@@ -59,7 +59,7 @@ class GedcomFamily(GedcomRootElement):
         :rtype: str
         """
         if self.find_sub_element("WIFE") != []:
-            return self.find_sub_element("WIFE")[0].value
+            return self.find_sub_element("WIFE")[0].get_value()
         else:
             return ""
 
@@ -71,7 +71,7 @@ class GedcomFamily(GedcomRootElement):
         """
         children = []
         for child in self.find_sub_element("CHIL"):
-            children.append(child.value)
+            children.append(child.get_value())
         return children
 
     def __find_are_married(self) -> str:

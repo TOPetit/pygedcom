@@ -35,7 +35,7 @@ class GedcomIndividual(GedcomRootElement):
         :rtype: str
         """
         if self.find_sub_element("NAME") != []:
-            return self.find_sub_element("NAME")[0].value
+            return self.find_sub_element("NAME")[0].get_value()
         else:
             return ""
 
@@ -90,7 +90,7 @@ class GedcomIndividual(GedcomRootElement):
         :rtype: str
         """
         return (
-            self.find_sub_element("SEX")[0].value
+            self.find_sub_element("SEX")[0].get_value()
             if self.find_sub_element("SEX") != []
             else None
         )

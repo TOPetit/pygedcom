@@ -1,6 +1,3 @@
-# TODO: make the parameters private
-
-
 class GedcomElement:
     """Class for representing a Gedcom element.
 
@@ -24,9 +21,9 @@ class GedcomElement:
         value: str = None,
     ):
         """Initialize the Gedcom element."""
-        self.level = level
-        self.tag = tag
-        self.value = value
+        self.__level = level
+        self.__tag = tag
+        self.__value = value
         self.__sub_elements = []
         if sub_elements != []:
             current_parsed_line = self.__parse_line(sub_elements[0])
@@ -87,7 +84,39 @@ class GedcomElement:
         :return: The sub element found.
         :rtype: list
         """
-        return [element for element in self.__sub_elements if element.tag == tag]
+        return [element for element in self.__sub_elements if element.get_tag() == tag]
+
+    def get_level(self) -> int:
+        """Get the level of the Gedcom element.
+
+        :return: The level of the Gedcom element.
+        :rtype: int
+        """
+        return self.__level
+
+    def get_tag(self) -> str:
+        """Get the tag of the Gedcom element.
+
+        :return: The tag of the Gedcom element.
+        :rtype: str
+        """
+        return self.__tag
+
+    def get_value(self) -> str:
+        """Get the value of the Gedcom element.
+
+        :return: The value of the Gedcom element.
+        :rtype: str
+        """
+        return self.__value
+
+    def set_value(self, value: str):
+        """Set the value of the Gedcom element.
+
+        :param value: The value to set.
+        :type value: str
+        """
+        self.__value = value
 
     def __str__(self) -> str:
         """Get the string representation of the Gedcom element.
@@ -97,11 +126,11 @@ class GedcomElement:
         """
         return (
             "Level: "
-            + str(self.level)
+            + str(self.__level)
             + ", Tag: "
-            + str(self.tag)
+            + str(self.__tag)
             + ", Value: "
-            + str(self.value)
+            + str(self.__value)
         )
 
     def __repr__(self) -> str:
