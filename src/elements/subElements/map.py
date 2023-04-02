@@ -30,8 +30,8 @@ class GedcomMap(GedcomElement):
 
     def init_properties(self):
         """Initialize the properties of the Gedcom map element."""
-        self.__latitude = self.__find_latitude()
-        self.__longitude = self.__find_longitude()
+        self.__export_latitude = self.__find_latitude()
+        self.__export_longitude = self.__find_longitude()
 
     def __find_latitude(self) -> str:
         """Find the latitude of the Gedcom map element.
@@ -61,7 +61,7 @@ class GedcomMap(GedcomElement):
         :return: The latitude of the Gedcom map element.
         :rtype: str
         """
-        return self.__latitude
+        return self.__export_latitude
 
     def get_longitude(self) -> str:
         """Get the longitude of the Gedcom map element.
@@ -69,7 +69,7 @@ class GedcomMap(GedcomElement):
         :return: The longitude of the Gedcom map element.
         :rtype: str
         """
-        return self.__longitude
+        return self.__export_longitude
 
     def __str__(self) -> str:
         """Get the string representation of the Gedcom map element.
@@ -77,7 +77,7 @@ class GedcomMap(GedcomElement):
         :return: The string representation of the Gedcom map element.
         :rtype: str
         """
-        return f"Map: {self.__latitude}, {self.__longitude}"
+        return f"Map: {self.__export_latitude}, {self.__export_longitude}"
 
     def __repr__(self) -> str:
         """Get the string representation of the Gedcom map element.
@@ -86,25 +86,3 @@ class GedcomMap(GedcomElement):
         :rtype: str
         """
         return self.__str__()
-
-    def export(self, format="json", empty_fields=True) -> dict:
-        """Get the data of the Gedcom map element. The result contains the latitude and longitude.
-
-        :param format: The format of the export, defaults to "json"
-        :type format: str, optional
-        :param empty_fields: If True, the empty fields are exported, defaults to True
-        :type empty_fields: bool, optional
-        :return: The data of the Gedcom map element.
-        :rtype: dict
-        """
-
-        if format not in known_formats:
-            raise FormatException("Format " + format + " is not supported.")
-
-        if format == "json":
-            export = {}
-            if empty_fields or self.__latitude:
-                export["latitude"] = self.__latitude
-            if empty_fields or self.__longitude:
-                export["longitude"] = self.__longitude
-            return export

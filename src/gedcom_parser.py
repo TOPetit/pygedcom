@@ -208,39 +208,37 @@ class GedcomParser:
             export = {}
             if empty_fields or self.head:
                 export["head"] = (
-                    self.head.export(format="json", empty_fields=empty_fields)
-                    if self.head
-                    else ""
+                    self.head.export(empty_fields=empty_fields) if self.head else ""
                 )
             if empty_fields or self.individuals:
                 export["individuals"] = {}
                 for individual in self.individuals:
                     export["individuals"][individual.get_xref()] = individual.export(
-                        format="json", empty_fields=empty_fields
+                        empty_fields=empty_fields
                     )
             if empty_fields or self.families:
                 export["families"] = {}
                 for family in self.families:
                     export["families"][family.get_xref()] = family.export(
-                        format="json", empty_fields=empty_fields
+                        empty_fields=empty_fields
                     )
             if empty_fields or self.sources:
                 export["sources"] = {}
                 for source in self.sources:
                     export["sources"][source.get_xref()] = source.export(
-                        format="json", empty_fields=empty_fields
+                        empty_fields=empty_fields
                     )
             if empty_fields or self.objects:
                 export["objects"] = {}
                 for object in self.objects:
                     export["objects"][object.get_xref()] = object.export(
-                        format="json", empty_fields=empty_fields
+                        empty_fields=empty_fields
                     )
             if empty_fields or self.repositories:
                 export["repositories"] = {}
                 for repository in self.repositories:
                     export["repositories"][repository.get_xref()] = repository.export(
-                        format="json", empty_fields=empty_fields
+                        empty_fields=empty_fields
                     )
             return json.dumps(export, indent=4, ensure_ascii=False)
 

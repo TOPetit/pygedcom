@@ -20,8 +20,8 @@ class GedcomObject(GedcomRootElement):
     def __init__(self, level: int, xref: str, tag: str, sub_elements: list):
         """Initialize the Gedcom object."""
         super().__init__(level, xref, tag, sub_elements)
-        self.__file = self.__find_file()
-        self.__format = self.__find_format()
+        self.__export_file = self.__find_file()
+        self.__export_format = self.__find_format()
 
     def __find_file(self) -> str:
         """Find the file path of the Gedcom object.
@@ -51,7 +51,7 @@ class GedcomObject(GedcomRootElement):
         :return: The file path of the Gedcom object.
         :rtype: str
         """
-        return self.__file
+        return self.__export_file
 
     def get_format(self) -> str:
         """Get the format of the Gedcom object.
@@ -59,25 +59,4 @@ class GedcomObject(GedcomRootElement):
         :return: The format of the Gedcom object.
         :rtype: str
         """
-        return self.__format
-
-    def export(self, format="json", empty_fields=True) -> dict:
-        """Get the data of the Gedcom object.
-
-        :param format: The format of the export.
-        :type format: str
-        :param empty_fields: If empty fields should be exported.
-        :type empty_fields: bool
-        :return: The data of the Gedcom object.
-        :rtype: dict
-        """
-        if format not in known_formats:
-            raise FormatException("Format " + format + " is not supported.")
-        if format == "json":
-            export = {"file": self.__file, "format": self.__format}
-            export = {}
-            if empty_fields or self.__file != "":
-                export["file"] = self.__file
-            if empty_fields or self.__format != "":
-                export["format"] = self.__format
-            return export
+        return self.__export_format

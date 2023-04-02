@@ -31,7 +31,11 @@ class GedcomDate(GedcomElement):
 
     def init_properties(self):
         """Initialize the properties of the Gedcom date element."""
-        self.__day, self.__month, self.__year = self.__parse_value()
+        (
+            self.__export_day,
+            self.__export_month,
+            self.__export_year,
+        ) = self.__parse_value()
 
     def __parse_value(self) -> tuple:
         """Parse the value of the Gedcom date element.
@@ -103,12 +107,12 @@ class GedcomDate(GedcomElement):
         :rtype: str
         """
         results = []
-        if self.__day:
-            results.append(self.__day)
-        if self.__month:
-            results.append(self.__month)
-        if self.__year:
-            results.append(self.__year)
+        if self.__export_day:
+            results.append(self.__export_day)
+        if self.__export_month:
+            results.append(self.__export_month)
+        if self.__export_year:
+            results.append(self.__export_year)
         return " ".join(results) if results != [] else ""
 
     def __repr__(self):
@@ -118,26 +122,3 @@ class GedcomDate(GedcomElement):
         :rtype: str
         """
         return self.__str__()
-
-    def export(self, format="json", empty_fields=True) -> dict:
-        """Return the data of the Gedcom date element. The result contains the day, month and year of the Gedcom date element.
-
-        :param format: The format of the export, defaults to "json"
-        :type format: str, optional
-        :param empty_fields: If True, the empty fields are exported, defaults to True
-        :type empty_fields: bool, optional
-        :return: The data of the Gedcom date element.
-        :rtype: dict
-        """
-
-        if format not in known_formats:
-            raise FormatException("Format " + format + " is not supported.")
-        if format == "json":
-            export = {}
-            if empty_fields or self.__day:
-                export["day"] = self.__day
-            if empty_fields or self.__month:
-                export["month"] = self.__month
-            if empty_fields or self.__year:
-                export["year"] = self.__year
-            return export

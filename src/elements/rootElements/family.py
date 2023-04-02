@@ -21,11 +21,11 @@ class GedcomFamily(GedcomRootElement):
     def __init__(self, level: int, xref: str, tag: str, sub_elements: list):
         """Initialize the family."""
         super().__init__(level, xref, tag, sub_elements)
-        self.__husband = self.__find_husband()
-        self.__wife = self.__find_wife()
-        self.__children = self.__find_children()
-        self.__married = self.__find_are_married()
-        self.__marriage = self.__find_marriage()
+        self.__export_husband = self.__find_husband()
+        self.__export_wife = self.__find_wife()
+        self.__export_children = self.__find_children()
+        self.__export_married = self.__find_are_married()
+        self.__export_marriage = self.__find_marriage()
 
     def __find_marriage(self) -> GedcomCommonEvent:
         """Find the marriage of the family.
@@ -88,7 +88,7 @@ class GedcomFamily(GedcomRootElement):
         :return: The husband of the family.
         :rtype: str
         """
-        return self.__husband
+        return self.__export_husband
 
     def get_wife(self) -> str:
         """Get the wife of the family.
@@ -96,7 +96,7 @@ class GedcomFamily(GedcomRootElement):
         :return: The wife of the family.
         :rtype: str
         """
-        return self.__wife
+        return self.__export_wife
 
     def get_children(self) -> list:
         """Get the children of the family.
@@ -104,7 +104,7 @@ class GedcomFamily(GedcomRootElement):
         :return: The children of the family.
         :rtype: list
         """
-        return self.__children
+        return self.__export_children
 
     def get_parents(self) -> list:
         """Get the parents of the family.
@@ -112,31 +112,4 @@ class GedcomFamily(GedcomRootElement):
         :return: The parents of the family.
         :rtype: list
         """
-        return [self.__husband, self.__wife]
-
-    def export(self, format="json", empty_fields=True) -> dict:
-        """Get the data of the family. The result contains husband, wife, children, marriage status and marriage data.
-
-        :param format: The format of the export.
-        :type format: str
-        :param empty_fields: If empty fields should be exported.
-        :type empty_fields: bool
-        :return: The data of the family.
-        :rtype: dict
-        """
-
-        if format not in known_formats:
-            raise FormatException("Format " + format + " is not supported.")
-        if format == "json":
-            export = {}
-            if empty_fields or self.__husband:
-                export["husband"] = self.__husband
-            if empty_fields or self.__wife:
-                export["wife"] = self.__wife
-            if empty_fields or self.__children:
-                export["children"] = self.__children
-            if empty_fields or self.__married:
-                export["married"] = self.__married
-            if empty_fields or self.__marriage:
-                export["marriage"] = self.__marriage.export() if self.__married else ""
-            return export
+        return [self.__export_husband, self.__wife]

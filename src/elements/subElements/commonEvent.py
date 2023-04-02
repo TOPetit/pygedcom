@@ -32,8 +32,8 @@ class GedcomCommonEvent(GedcomElement):
 
     def init_properties(self):
         """Initialize the properties of the common event."""
-        self.__date = self.__find_date()
-        self.__place = self.__find_place()
+        self.__export_date = self.__find_date()
+        self.__export_place = self.__find_place()
 
     def __find_place(self) -> GedcomPlace:
         """Find the place of the common event.
@@ -69,7 +69,7 @@ class GedcomCommonEvent(GedcomElement):
         :return: The date of the common event.
         :rtype: GedcomDate
         """
-        return self.__date
+        return self.__export_date
 
     def get_place(self) -> GedcomPlace:
         """Get the place of the common event.
@@ -77,7 +77,7 @@ class GedcomCommonEvent(GedcomElement):
         :return: The place of the common event.
         :rtype: GedcomPlace
         """
-        return self.__place
+        return self.__export_place
 
     def __str__(self):
         """Return the string representation of the common event.
@@ -85,7 +85,7 @@ class GedcomCommonEvent(GedcomElement):
         :return: The string representation of the common event.
         :rtype: str
         """
-        return f"{self.__date} {self.__place}"
+        return f"{self.__export_date} {self.__export_place}"
 
     def __repr__(self):
         """Return the string representation of the common event.
@@ -94,24 +94,3 @@ class GedcomCommonEvent(GedcomElement):
         :rtype: str
         """
         return self.__str__()
-
-    def export(self, format="json", empty_fields=True):
-        """Get de data of the common event. Used to export the data to JSON.
-
-        :param format: The format of the data, defaults to "json"
-        :type format: str, optional
-        :param empty_fields: If the empty fields should be exported, defaults to True
-        :type empty_fields: bool, optional
-        :return: The data of the common event.
-        :rtype: dict
-        """
-
-        if format not in known_formats:
-            raise FormatException("Format " + format + " is not supported.")
-        if format == "json":
-            export = {}
-            if empty_fields or self.__date:
-                export["date"] = self.__date.export() if self.__date else ""
-            if empty_fields or self.__place:
-                export["place"] = self.__place.export() if self.__place else ""
-            return export

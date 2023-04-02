@@ -111,3 +111,28 @@ class GedcomElement:
         :rtype: str
         """
         return self.__str__()
+
+    def export(self, empty_fields=True) -> dict:
+        """Export the Gedcom element.
+
+        :param empty_fields: Whether to export empty fields. Defaults to True.
+        :type empty_fields: bool, optional
+        :return: The exported Gedcom element.
+        :rtype: dict
+        """
+
+        export_dict = {}
+        prefix = f"_{self.__class__.__name__}__export_"
+        for attr in dir(self):
+            if attr.startswith(prefix):
+                export_key = attr.replace(prefix, "")
+                export_value = getattr(self, attr)
+                if isinstance(export_value, GedcomElement):
+                    export_dict[export_key] = export_value.export(
+                        empty_fields=empty_fields
+                    )
+                elif not export_value and not empty_fields:
+                    pass
+                else:
+                    export_dict[export_key] = export_value if export_value else ""
+        return export_dict
