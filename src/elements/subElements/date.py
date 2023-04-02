@@ -33,11 +33,19 @@ class GedcomDate(GedcomElement):
         """Initialize the properties of the Gedcom date element."""
         self.__parse_value()
 
-    def __parse_value(self) -> tuple:
-        """Parse the value of the Gedcom date element.
+    def __parse_value(self):
+        """Parse the value of the Gedcom date element. This function initializes the following properties:
 
-        :return: The day, month and year of the Gedcom date element.
-        :rtype: tuple
+        - __export_tag
+        - __export_day
+        - __export_month
+        - __export_year
+
+        and if needed (when the format contains 2 dates):
+
+        - __export_day1
+        - __export_month1
+        - __export_year1
         """
         if self.get_value().startswith("ABT"):
             self.__export_tag = "ABT"
