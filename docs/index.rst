@@ -12,6 +12,7 @@ Welcome to gedcom-parser's documentation!
 
    ./sources/getting_started.rst
    ./sources/parsing.rst
+   ./sources/export.rst
 
 .. toctree::
    :maxdepth: 2
