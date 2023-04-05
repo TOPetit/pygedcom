@@ -11,12 +11,3 @@ print(parser.get_stats())
 json_string = parser.export(format="json", empty_fields=False)
 with open("private/test.json", "w") as file:
     file.write(json_string)
-
-
-def testdoc(truc: int):
-    """
-    This is a test docstring
-
-    :param truc: a number
-    """
-    return truc

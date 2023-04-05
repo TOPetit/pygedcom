@@ -34,6 +34,7 @@ class GedcomCommonEvent(GedcomElement):
         """Initialize the properties of the common event."""
         self.__export_date = self.__find_date()
         self.__export_place = self.__find_place()
+        self.__export_media = self.__find_media()
 
     def __find_place(self) -> GedcomPlace:
         """Find the place of the common event.
@@ -63,6 +64,14 @@ class GedcomCommonEvent(GedcomElement):
         else:
             return None
 
+    def __find_media(self) -> list:
+        """Find the media of the common event.
+
+        :return: The media of the common event.
+        :rtype: list
+        """
+        return [element.get_value() for element in self.find_sub_element("OBJE")]
+
     def get_date(self) -> GedcomDate:
         """Get the date of the common event.
 
@@ -78,6 +87,14 @@ class GedcomCommonEvent(GedcomElement):
         :rtype: GedcomPlace
         """
         return self.__export_place
+
+    def get_media(self) -> list:
+        """Get the media of the common event.
+
+        :return: The media of the common event.
+        :rtype: list
+        """
+        return self.__export_media
 
     def __str__(self):
         """Return the string representation of the common event.

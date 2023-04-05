@@ -27,6 +27,7 @@ class GedcomIndividual(GedcomRootElement):
         self.__export_birth = self.__init_birth()
         self.__export_death = self.__init_death()
         self.__export_sex = self.__find_sex()
+        self.__export_media = self.__find_media()
 
     def __find_name(self):
         """Find the name of the individual.
@@ -95,6 +96,14 @@ class GedcomIndividual(GedcomRootElement):
             else None
         )
 
+    def __find_media(self) -> list:
+        """Find media of the individual.
+
+        :return: media of the individual.
+        :rtype: list
+        """
+        return [element.get_value() for element in self.find_sub_element("OBJE")]
+
     def get_name(self) -> str:
         """Get the name of the individual.
 
@@ -134,6 +143,22 @@ class GedcomIndividual(GedcomRootElement):
         :rtype: str
         """
         return self.__export_last_name
+
+    def get_sex(self) -> str:
+        """Get the sex of the individual.
+
+        :return: The sex of the individual
+        :rtype: str
+        """
+        return self.__export_sex
+
+    def get_media(self) -> list:
+        """Get the media of the individual.
+
+        :return: The media of the individual
+        :rtype: list
+        """
+        return self.__export_media
 
     def __str__(self):
         """Get the string representation of the individual.

@@ -26,6 +26,7 @@ class GedcomFamily(GedcomRootElement):
         self.__export_children = self.__find_children()
         self.__export_married = self.__find_are_married()
         self.__export_marriage = self.__find_marriage()
+        self.__export_media = self.__find_media()
 
     def __find_marriage(self) -> GedcomCommonEvent:
         """Find the marriage of the family.
@@ -80,7 +81,19 @@ class GedcomFamily(GedcomRootElement):
         :return: True if the family is married, False otherwise.
         :rtype: bool
         """
-        return self.find_sub_element("MARR") != []
+        return self.find_sub_element("MARR") != [] or (
+            self.find_sub_element("_UST")[0].get_value() == "MARRIED"
+            if self.find_sub_element("_UST") != []
+            else False
+        )
+
+    def __find_media(self) -> list:
+        """Find the media of the family.
+
+        :return: The media of the family.
+        :rtype: list
+        """
+        return [element.get_value() for element in self.find_sub_element("OBJE")]
 
     def get_husband(self) -> str:
         """Get the husband of the family.
@@ -113,3 +126,27 @@ class GedcomFamily(GedcomRootElement):
         :rtype: list
         """
         return [self.__export_husband, self.__wife]
+
+    def get_married(self) -> bool:
+        """Get if the family is married.
+
+        :return: True if the family is married, False otherwise.
+        :rtype: bool
+        """
+        return self.__export_married
+
+    def get_marriage(self) -> GedcomCommonEvent:
+        """Get the marriage of the family.
+
+        :return: The marriage of the family.
+        :rtype: GedcomCommonEvent
+        """
+        return self.__export_marriage
+
+    def get_media(self) -> list:
+        """Get the media of the family.
+
+        :return: The media of the family.
+        :rtype: list
+        """
+        return self.__export_media
