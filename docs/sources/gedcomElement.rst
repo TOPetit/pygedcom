@@ -1,7 +1,7 @@
 GedcomElement
 =============
 
-.. autoclass:: src.elements.element.GedcomElement
+.. autoclass:: src.pygedcom.elements.element.GedcomElement
     :show-inheritance:
     :inherited-members:
     :members:

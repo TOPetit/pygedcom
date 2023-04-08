@@ -1,4 +1,4 @@
-from src import gedcom_parser
+from src.pygedcom import gedcom_parser
 
 
 def test_parse_00():

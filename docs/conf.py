@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.abspath(".."))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = "gedcom-parser"
+project = "pygedcom"
 copyright = "2023, Theo Petit"
 author = "Theo Petit"
 

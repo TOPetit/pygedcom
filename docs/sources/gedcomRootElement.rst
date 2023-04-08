@@ -1,43 +1,43 @@
 GedcomRootElement
 =================
 
-.. autoclass:: src.elements.rootElements.rootElement.GedcomRootElement
+.. autoclass:: src.pygedcom.elements.rootElements.rootElement.GedcomRootElement
     :show-inheritance:
     :inherited-members:
     :members:
 
 
-.. autoclass:: src.elements.rootElements.head.GedcomHead
+.. autoclass:: src.pygedcom.elements.rootElements.head.GedcomHead
     :show-inheritance:
     :inherited-members:
     :members:
 
 
-.. autoclass:: src.elements.rootElements.individual.GedcomIndividual
+.. autoclass:: src.pygedcom.elements.rootElements.individual.GedcomIndividual
     :show-inheritance:
     :inherited-members:
     :members:
 
 
-.. autoclass:: src.elements.rootElements.family.GedcomFamily
+.. autoclass:: src.pygedcom.elements.rootElements.family.GedcomFamily
     :show-inheritance:
     :inherited-members:
     :members:
 
 
-.. autoclass:: src.elements.rootElements.object.GedcomObject
+.. autoclass:: src.pygedcom.elements.rootElements.object.GedcomObject
     :show-inheritance:
     :inherited-members:
     :members:
 
 
-.. autoclass:: src.elements.rootElements.repository.GedcomRepository
+.. autoclass:: src.pygedcom.elements.rootElements.repository.GedcomRepository
     :show-inheritance:
     :inherited-members:
     :members:
 
 
-.. autoclass:: src.elements.rootElements.source.GedcomSource
+.. autoclass:: src.pygedcom.elements.rootElements.source.GedcomSource
     :show-inheritance:
     :inherited-members:
     :members:

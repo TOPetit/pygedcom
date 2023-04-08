@@ -1,6 +1,5 @@
-from src.FormatException import FormatException, known_formats
-from src.elements.subElements.commonEvent import GedcomCommonEvent
-from src.elements.rootElements.rootElement import GedcomRootElement
+from ..subElements.commonEvent import GedcomCommonEvent
+from .rootElement import GedcomRootElement
 
 
 class GedcomFamily(GedcomRootElement):

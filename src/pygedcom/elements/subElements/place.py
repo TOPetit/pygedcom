@@ -1,5 +1,4 @@
-from src.FormatException import FormatException, known_formats
-from src.elements.subElements.map import GedcomMap
+from .map import GedcomMap
 from ..element import GedcomElement
 
 

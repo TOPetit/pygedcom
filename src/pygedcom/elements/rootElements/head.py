@@ -1,6 +1,4 @@
-from src.elements.rootElements.rootElement import GedcomRootElement
-from src.FormatException import FormatException, known_formats
-
+from .rootElement import GedcomRootElement
 
 class GedcomHead(GedcomRootElement):
     """Class for the HEAD element.

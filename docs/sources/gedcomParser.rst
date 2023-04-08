@@ -1,5 +1,5 @@
 GedcomParser
 ============
 
-.. autoclass:: src.gedcom_parser.GedcomParser
+.. autoclass:: src.pygedcom.gedcom_parser.GedcomParser
     :members:

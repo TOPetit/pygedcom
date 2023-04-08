@@ -1,6 +1,5 @@
-from src.FormatException import FormatException, known_formats
-from src.elements.subElements.date import GedcomDate
-from src.elements.subElements.place import GedcomPlace
+from .date import GedcomDate
+from .place import GedcomPlace
 from ..element import GedcomElement
 
 

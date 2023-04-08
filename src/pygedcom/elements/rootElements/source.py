@@ -1,4 +1,4 @@
-from src.elements.rootElements.rootElement import GedcomRootElement
+from .rootElement import GedcomRootElement
 import re
 
 

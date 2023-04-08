@@ -1,6 +1,4 @@
-from src.FormatException import FormatException, known_formats
-from src.elements.rootElements.rootElement import GedcomRootElement
-
+from .rootElement import GedcomRootElement
 
 class GedcomRepository(GedcomRootElement):
     """This class represents a repository in the gedcom file.

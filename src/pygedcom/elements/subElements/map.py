@@ -1,4 +1,3 @@
-from src.FormatException import FormatException, known_formats
 from ..element import GedcomElement
 
 

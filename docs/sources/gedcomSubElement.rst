@@ -1,22 +1,22 @@
 GedcomSubElement
 =================
 
-.. autoclass:: src.elements.subElements.commonEvent.GedcomCommonEvent
+.. autoclass:: src.pygedcom.elements.subElements.commonEvent.GedcomCommonEvent
     :show-inheritance:
     :inherited-members:
     :members:
 
-.. autoclass:: src.elements.subElements.date.GedcomDate
+.. autoclass:: src.pygedcom.elements.subElements.date.GedcomDate
     :show-inheritance:
     :inherited-members:
     :members:
 
-.. autoclass:: src.elements.subElements.place.GedcomPlace
+.. autoclass:: src.pygedcom.elements.subElements.place.GedcomPlace
     :show-inheritance:
     :inherited-members:
     :members:
 
-.. autoclass:: src.elements.subElements.map.GedcomMap
+.. autoclass:: src.pygedcom.elements.subElements.map.GedcomMap
     :show-inheritance:
     :inherited-members:
     :members:
