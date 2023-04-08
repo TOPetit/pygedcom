@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pygedcom"
+version = "0.0.1"
+authors = [
+    { name="Theo Petit", email="theo.p83@gmail.com" },
+]
+description = "A gedcom utility library"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/topetit/pygedcom"
+"Bug Tracker" = "https://github.com/topetit/pygedcom/issues"
