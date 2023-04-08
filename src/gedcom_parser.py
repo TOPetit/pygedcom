@@ -199,10 +199,10 @@ class GedcomParser:
         :type format: str
         :param empty_fields: If True, empty fields will be exported. Default is True.
         :type empty_fields: bool
-        :return: The exported file.
+        :return: The exported file's content.
         :rtype: str
         """
-        if format not in ["json"]:
+        if format not in ["json", "gedcom"]:
             raise FormatException("Format " + format + " is not supported.")
         if format == "json":
             export = {}
@@ -241,6 +241,22 @@ class GedcomParser:
                         empty_fields=empty_fields
                     )
             return json.dumps(export, indent=4, ensure_ascii=False)
+        if format == "gedcom":
+            content = ""
+            if self.head:
+                content += self.head.extract_gedcom()
+            for individual in self.individuals:
+                content += individual.extract_gedcom()
+            for family in self.families:
+                content += family.extract_gedcom()
+            for source in self.sources:
+                content += source.extract_gedcom()
+            for object in self.objects:
+                content += object.extract_gedcom()
+            for repository in self.repositories:
+                content += repository.extract_gedcom()
+            content += "0 TRLR\n"
+            return content
 
     def get_parents(self, individual: GedcomIndividual) -> list:
         """Get the parents of an individual.

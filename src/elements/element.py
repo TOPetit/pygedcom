@@ -141,6 +141,28 @@ class GedcomElement:
         """
         return self.__str__()
 
+    def get_gedcom(self):
+        """Get the Gedcom representation of the Gedcom element.
+
+        :return: The Gedcom representation of the Gedcom element.
+        :rtype: str
+        """
+        gedcom = [self.get_level()]
+        if hasattr(self, "get_xref"):
+            gedcom.append(self.get_xref())
+        gedcom.append(self.get_tag())
+        if self.get_value():
+            gedcom.append(self.get_value())
+        return f"{' '.join([str(x) for x in gedcom])}\n"
+
+    def extract_gedcom(self) -> str:
+        """Extract the Gedcom element.
+
+        :return: The extracted Gedcom element.
+        :rtype: str
+        """
+        return f"{self.get_gedcom()}{''.join([element.extract_gedcom() for element in self.get_sub_elements()])}"
+
     def export(self, empty_fields=True) -> dict:
         """Export the Gedcom element.
 
