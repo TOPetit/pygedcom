@@ -5,14 +5,14 @@ First, you need to import the `gedcom_parser` module.
 
 .. code-block:: python
 
-    from src import gedcom_parser
+    import pygedcom
 
 
 To get started with the `gedcom_parser` module, you'll need to initialize a `GedcomParser` object:
 
 .. code-block:: python
 
-    parser = gedcom_parser.GedcomParser(path="path/to/your/gedcom_file.ged")
+    parser = pygedcom.GedcomParser(path="path/to/your/gedcom_file.ged")
 
 You can check the parsing statistics to ensure that you've parsed the file correctly:
 
@@ -36,9 +36,9 @@ Here is the full setup block:
 
 .. code-block:: python
 
-    from src import gedcom_parser
+    import pygedcom
 
-    parser = gedcom_parser.GedcomParser(path="path/to/your/gedcom_file.ged")
+    parser = pygedcom.GedcomParser(path="path/to/your/gedcom_file.ged")
     verif = parser.verify()
     if verif.status == 'ok':
         print("Your GEDCOM file is valid")

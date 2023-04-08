@@ -5,12 +5,20 @@ Python module to parse GEDCOM 5.5.1 files and generate output files in a more hu
 Full documentation is available at [https://topetit.github.io/pygedcom/docs/](https://topetit.github.io/pygedcom/docs/).
 
 
+## Installation
+
+You can install the module with pip:
+
+```bash
+pip install pygedcom
+```
+
 ## Getting started
 
 First, you need to import the `gedcom_parser` module.
 
 ```python
-from src import gedcom_parser
+import pygedcom
 ```
 
 
@@ -43,9 +51,9 @@ else:
 Here is the full setup block:
 
 ```python
-from src import gedcom_parser
+import pygedcom
 
-parser = gedcom_parser.GedcomParser(path="path/to/your/gedcom_file.ged")
+parser = pygedcom.GedcomParser(path="path/to/your/gedcom_file.ged")
 verif = parser.verify()
 
 if verif.status == 'ok':
