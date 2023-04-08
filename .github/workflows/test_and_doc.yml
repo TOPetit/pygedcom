@@ -27,9 +27,10 @@ jobs:
           pytest --html=build/tests/index.html --self-contained-html
 
       - name: Generate documentation
-        uses: ammaraskar/sphinx-action@master
-        with:
-          docs-folder: "docs/"
+        run: |
+          cd docs/
+          make html
+          cd ..
 
       - name: Move doc to build folder
         run: |
