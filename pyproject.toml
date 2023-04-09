@@ -4,7 +4,6 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pygedcom"
-version = "0.1.1"
 authors = [
     { name="Theo Petit", email="theo.p83@gmail.com" },
 ]
