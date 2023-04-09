@@ -159,7 +159,9 @@ class GedcomFamily(GedcomRootElement):
         for child in self.find_sub_element("CHIL"):
             if child.get_value() == child_xref:
                 self.remove_sub_element(child)
-        self.__export_children.remove(child_xref) if child_xref in self.__export_children else None
+        self.__export_children.remove(
+            child_xref
+        ) if child_xref in self.__export_children else None
 
     def remove_parent(self, parent_xref: str):
         """Remove a parent from the family.

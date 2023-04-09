@@ -33,14 +33,22 @@ def test_export_json_20():
     parser = gedcom_parser.GedcomParser("test/samples/20_complex_sample.ged")
     parser.parse()
     result = json.loads(parser.export())
-    assert result["individuals"]["@1@"]["name"] == "Robert Eugene/Williams/"
-    assert result["individuals"]["@1@"]["birth"]["date"]["day"] == "02"
-    assert result["individuals"]["@1@"]["birth"]["date"]["month"] == "OCT"
-    assert result["individuals"]["@1@"]["birth"]["date"]["year"] == "1822"
-    assert result["individuals"]["@1@"]["sex"] == "M"
-    assert result["individuals"]["@1@"]["death"]["date"]["day"] == "14"
-    assert result["individuals"]["@1@"]["death"]["date"]["month"] == "APR"
-    assert result["individuals"]["@1@"]["death"]["date"]["year"] == "1905"
+    assert result["individuals"]["@I0001@"]["name"] == "John /Smith/"
+    assert result["individuals"]["@I0001@"]["first_name"] == "John"
+    assert result["individuals"]["@I0001@"]["last_name"] == "Smith"
+    assert result["individuals"]["@I0001@"]["birth"]["date"]["day"] == "1"
+    assert result["individuals"]["@I0001@"]["birth"]["date"]["month"] == "JAN"
+    assert result["individuals"]["@I0001@"]["birth"]["date"]["year"] == "1900"
+    assert result["individuals"]["@I0002@"]["name"] == "Jane /Doe/"
+    assert result["individuals"]["@I0002@"]["first_name"] == "Jane"
+    assert result["individuals"]["@I0002@"]["last_name"] == "Doe"
+    assert result["individuals"]["@I0002@"]["birth"]["date"]["day"] == "05"
+    assert result["individuals"]["@I0002@"]["birth"]["date"]["month"] == "FEB"
+    assert result["individuals"]["@I0002@"]["birth"]["date"]["year"] == "1901"
+
+    assert result["families"]["@F0001@"]["husband"] == "@I0001@"
+    assert result["families"]["@F0001@"]["wife"] == "@I0002@"
+    assert result["families"]["@F0001@"]["children"] == ["@I0003@"]
 
 
 def test_export_gedcom_00():
@@ -58,9 +66,10 @@ def test_export_gedcom_01():
     with open("test/samples/01_simple_family_record.ged") as f:
         assert result == f.read()
 
-# def test_export_gedcom_20():
-#     parser = gedcom_parser.GedcomParser("test/samples/20_complex_sample.ged")
-#     parser.parse()
-#     result = parser.export(format="gedcom")
-#     with open("test/samples/20_complex_sample.ged") as f:
-#         assert result == f.read()
+
+def test_export_gedcom_20():
+    parser = gedcom_parser.GedcomParser("test/samples/20_complex_sample.ged")
+    parser.parse()
+    result = parser.export(format="gedcom")
+    with open("test/samples/20_complex_sample.ged") as f:
+        assert result == f.read()

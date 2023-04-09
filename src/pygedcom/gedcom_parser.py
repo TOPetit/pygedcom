@@ -7,6 +7,8 @@ from .elements.rootElements.individual import GedcomIndividual
 from .elements.rootElements.object import GedcomObject
 from .elements.rootElements.repository import GedcomRepository
 from .elements.rootElements.source import GedcomSource
+from .elements.rootElements.submitter import GedcomSubmitter
+from .elements.rootElements.note import GedcomNote
 from .elements.element import GedcomElement
 from .Exception import FormatException, DuplicateException, NotFoundException
 
@@ -31,6 +33,8 @@ class GedcomParser:
         self.sources = []
         self.objects = []
         self.repositories = []
+        self.submitters = []
+        self.notes = []
         self.isTRLR = False
 
     def __open(self) -> str:
@@ -146,6 +150,24 @@ class GedcomParser:
             )
         elif parsed_line["tag"] == "TRLR":
             self.isTRLR = True
+        elif parsed_line["tag"] == "SUBM":
+            self.submitters.append(
+                GedcomSubmitter(
+                    parsed_line["level"],
+                    parsed_line["xref"],
+                    parsed_line["tag"],
+                    element_lines,
+                )
+            )
+        elif parsed_line["tag"] == "NOTE":
+            self.notes.append(
+                GedcomNote(
+                    parsed_line["level"],
+                    parsed_line["xref"],
+                    parsed_line["tag"],
+                    element_lines,
+                )
+            )
 
     def parse(self) -> dict:
         """Parse the GEDCOM file and return a dictionary with the parsed elements
@@ -215,6 +237,12 @@ class GedcomParser:
                 export["head"] = (
                     self.head.export(empty_fields=empty_fields) if self.head else ""
                 )
+            if empty_fields or self.submitters:
+                export["submitters"] = {}
+                for submitter in self.submitters:
+                    export["submitters"][submitter.get_xref()] = submitter.export(
+                        empty_fields=empty_fields
+                    )
             if empty_fields or self.individuals:
                 export["individuals"] = {}
                 for individual in self.individuals:
@@ -227,16 +255,16 @@ class GedcomParser:
                     export["families"][family.get_xref()] = family.export(
                         empty_fields=empty_fields
                     )
-            if empty_fields or self.sources:
-                export["sources"] = {}
-                for source in self.sources:
-                    export["sources"][source.get_xref()] = source.export(
-                        empty_fields=empty_fields
-                    )
             if empty_fields or self.objects:
                 export["objects"] = {}
                 for object in self.objects:
                     export["objects"][object.get_xref()] = object.export(
+                        empty_fields=empty_fields
+                    )
+            if empty_fields or self.notes:
+                export["notes"] = {}
+                for note in self.notes:
+                    export["notes"][note.get_xref()] = note.export(
                         empty_fields=empty_fields
                     )
             if empty_fields or self.repositories:
@@ -245,21 +273,31 @@ class GedcomParser:
                     export["repositories"][repository.get_xref()] = repository.export(
                         empty_fields=empty_fields
                     )
+            if empty_fields or self.sources:
+                export["sources"] = {}
+                for source in self.sources:
+                    export["sources"][source.get_xref()] = source.export(
+                        empty_fields=empty_fields
+                    )
             return json.dumps(export, indent=4, ensure_ascii=False)
         if format == "gedcom":
             content = ""
             if self.head:
                 content += self.head.extract_gedcom()
+            for submitter in self.submitters:
+                content += submitter.extract_gedcom()
             for individual in self.individuals:
                 content += individual.extract_gedcom()
             for family in self.families:
                 content += family.extract_gedcom()
-            for source in self.sources:
-                content += source.extract_gedcom()
             for object in self.objects:
                 content += object.extract_gedcom()
+            for note in self.notes:
+                content += note.extract_gedcom()
             for repository in self.repositories:
                 content += repository.extract_gedcom()
+            for source in self.sources:
+                content += source.extract_gedcom()
             content += "0 TRLR\n" if self.isTRLR else ""
             return content
 
