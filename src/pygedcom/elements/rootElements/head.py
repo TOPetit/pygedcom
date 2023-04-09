@@ -1,5 +1,6 @@
 from .rootElement import GedcomRootElement
 
+
 class GedcomHead(GedcomRootElement):
     """Class for the HEAD element.
 

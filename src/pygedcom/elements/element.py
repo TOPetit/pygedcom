@@ -76,6 +76,28 @@ class GedcomElement:
         """
         return self.__sub_elements
 
+    def add_sub_element(self, level, tag, sub_elements, value=None):
+        """Add a sub element to the Gedcom element.
+
+        :param level: The level of the sub element.
+        :type level: int
+        :param tag: The tag of the sub element.
+        :type tag: str
+        :param sub_elements: The sub elements of the sub element.
+        :type sub_elements: list
+        :param value: The value of the sub element. Defaults to None.
+        :type value: str, optional
+        """
+        self.__sub_elements.append(GedcomElement(level, tag, sub_elements, value))
+
+    def remove_sub_element(self, element):
+        """Remove a sub element from the Gedcom element.
+
+        :param element: The sub element to remove.
+        :type element: GedcomElement
+        """
+        self.__sub_elements.remove(element)
+
     def find_sub_element(self, tag: str) -> list:
         """Find a sub element by tag.
 

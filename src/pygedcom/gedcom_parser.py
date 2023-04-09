@@ -1,4 +1,6 @@
 import json
+
+from .elements.rootElements.rootElement import GedcomRootElement
 from .elements.rootElements.family import GedcomFamily
 from .elements.rootElements.head import GedcomHead
 from .elements.rootElements.individual import GedcomIndividual
@@ -6,7 +8,7 @@ from .elements.rootElements.object import GedcomObject
 from .elements.rootElements.repository import GedcomRepository
 from .elements.rootElements.source import GedcomSource
 from .elements.element import GedcomElement
-from .FormatException import FormatException
+from .Exception import FormatException, DuplicateException, NotFoundException
 
 
 class GedcomParser:
@@ -303,7 +305,7 @@ class GedcomParser:
         for element in collection:
             if element.get_xref() == xref:
                 return element
-        return None
+        raise NotFoundException("Element with xref " + xref + " not found.")
 
     def find_individual(self, xref: str) -> GedcomIndividual:
         """Find an individual by its xref.
@@ -354,3 +356,144 @@ class GedcomParser:
         :rtype: GedcomRepository
         """
         return self.__find_root_element(self.repositories, xref)
+
+    def __add_root_element(self, collection: list, element: GedcomRootElement):
+        """Add an element to a collection.
+
+        :param collection: The collection to add the element to.
+        :type collection: list
+        :param element: The element to add.
+        :type element: GedcomRootElement
+        :raises DuplicateException: If the element already exists.
+        """
+        try:
+            self.__find_root_element(collection, element.get_xref())
+        except NotFoundException:
+            collection.append(element)
+        else:
+            raise DuplicateException(
+                "Element with xref " + element.get_xref() + " already exists."
+            )
+
+    def add_individual(self, individual: GedcomIndividual):
+        """Add an individual to the collection.
+
+        :param individual: The individual to add.
+        :type individual: GedcomIndividual
+        :raises DuplicateException: If the individual already exists.
+        :raises TypeError: If the individual is not of type GedcomIndividual.
+        """
+        if not isinstance(individual, GedcomIndividual):
+            raise TypeError("Individual must be of type GedcomIndividual.")
+        try:
+            self.__add_root_element(self.individuals, individual)
+        except DuplicateException:
+            raise DuplicateException(
+                "Individual with xref " + individual.get_xref() + " already exists."
+            )
+
+    def add_family(self, family: GedcomFamily):
+        """Add a family to the collection.
+
+        :param family: The family to add.
+        :type family: GedcomFamily
+        :raises DuplicateException: If the family already exists.
+        :raises TypeError: If the family is not of type GedcomFamily.
+        """
+        if not isinstance(family, GedcomFamily):
+            raise TypeError("Family must be of type GedcomFamily.")
+        try:
+            self.__add_root_element(self.families, family)
+        except DuplicateException:
+            raise DuplicateException(
+                "Family with xref " + family.get_xref() + " already exists."
+            )
+        self.families.append(family)
+
+    def add_source(self, source: GedcomSource):
+        """Add a source to the collection.
+
+        :param source: The source to add.
+        :type source: GedcomSource
+        :raises DuplicateException: If the source already exists.
+        :raises TypeError: If the source is not of type GedcomSource.
+        """
+        if not isinstance(source, GedcomSource):
+            raise TypeError("Source must be of type GedcomSource.")
+        try:
+            self.__add_root_element(self.sources, source)
+        except DuplicateException:
+            raise DuplicateException(
+                "Source with xref " + source.get_xref() + " already exists."
+            )
+        self.sources.append(source)
+
+    def add_object(self, object: GedcomObject):
+        """Add an object to the collection.
+
+        :param object: The object to add.
+        :type object: GedcomObject
+        :raises DuplicateException: If the object already exists.
+        :raises TypeError: If the object is not of type GedcomObject.
+        """
+        if not isinstance(object, GedcomObject):
+            raise TypeError("Object must be of type GedcomObject.")
+        try:
+            self.__add_root_element(self.objects, object)
+        except DuplicateException:
+            raise DuplicateException(
+                "Object with xref " + object.get_xref() + " already exists."
+            )
+        self.objects.append(object)
+
+    def add_repository(self, repository: GedcomRepository):
+        """Add a repository to the collection.
+
+        :param repository: The repository to add.
+        :type repository: GedcomRepository
+        :raises DuplicateException: If the repository already exists.
+        :raises TypeError: If the repository is not of type GedcomRepository.
+        """
+        if not isinstance(repository, GedcomRepository):
+            raise TypeError("Repository must be of type GedcomRepository.")
+        try:
+            self.__add_root_element(self.repositories, repository)
+        except DuplicateException:
+            raise DuplicateException(
+                "Repository with xref " + repository.get_xref() + " already exists."
+            )
+        self.repositories.append(repository)
+
+    def __remove_root_element(self, collection: list, xref: str):
+        """Remove an element from a collection.
+
+        :param collection: The collection to remove the element from.
+        :type collection: list
+        :param xref: The xref of the element to remove.
+        :type xref: str
+        :raises NotFoundException: If the element does not exist.
+        """
+        element = self.__find_root_element(collection, xref)
+        if not element:
+            raise NotFoundException()
+        collection.remove(element)
+
+    def remove_individual(self, xref: str):
+        """Remove an individual from the collection.
+
+        :param xref: The xref of the individual to remove.
+        :type xref: str
+        :raises NotFoundException: If the individual does not exist.
+        """
+        try:
+            individual = self.find_individual(xref)
+        except NotFoundException:
+            raise NotFoundException("Individual with xref " + xref + " does not exist.")
+
+        xref = individual.get_xref()
+
+        for family in self.families:
+            family.remove_parent(xref)
+            family.remove_child(xref)
+
+        self.__remove_root_element(self.individuals, xref)

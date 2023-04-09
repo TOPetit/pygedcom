@@ -1,5 +1,6 @@
 from .rootElement import GedcomRootElement
 
+
 class GedcomRepository(GedcomRootElement):
     """This class represents a repository in the gedcom file.
 

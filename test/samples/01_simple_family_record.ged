@@ -1,3 +1,7 @@
+0 @I1@ INDI
+1 NAME John /Travolta/
+0 @I2@ INDI
+1 NAME Jane /Travolta/
 0 @F1@ FAM
 1 HUSB @I1@
 1 WIFE @I2@

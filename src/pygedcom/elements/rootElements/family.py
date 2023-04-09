@@ -124,7 +124,7 @@ class GedcomFamily(GedcomRootElement):
         :return: The parents of the family.
         :rtype: list
         """
-        return [self.__export_husband, self.__wife]
+        return [self.__export_husband, self.__export_wife]
 
     def get_married(self) -> bool:
         """Get if the family is married.
@@ -149,3 +149,29 @@ class GedcomFamily(GedcomRootElement):
         :rtype: list
         """
         return self.__export_media
+
+    def remove_child(self, child_xref: str):
+        """Remove a child from the family.
+
+        :param child_xref: The xref of the child to remove.
+        :type child_xref: str
+        """
+        for child in self.find_sub_element("CHIL"):
+            if child.get_value() == child_xref:
+                self.remove_sub_element(child)
+        self.__export_children.remove(child_xref) if child_xref in self.__export_children else None
+
+    def remove_parent(self, parent_xref: str):
+        """Remove a parent from the family.
+
+        :param parent_xref: The xref of the parent to remove.
+        :type parent_xref: str
+        """
+        for parent in ["HUSB", "WIFE"]:
+            if self.find_sub_element(parent) != []:
+                if self.find_sub_element(parent)[0].get_value() == parent_xref:
+                    self.remove_sub_element(self.find_sub_element(parent)[0])
+        if self.__export_husband == parent_xref:
+            self.__export_husband = ""
+        if self.__export_wife == parent_xref:
+            self.__export_wife = ""

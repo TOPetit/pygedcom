@@ -1,5 +1,6 @@
 from .rootElement import GedcomRootElement
 
+
 class GedcomObject(GedcomRootElement):
     """This class represents an object in the gedcom file.
 

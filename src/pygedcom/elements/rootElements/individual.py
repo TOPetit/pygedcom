@@ -1,3 +1,4 @@
+from ...elements.element import GedcomElement
 from ..subElements.commonEvent import GedcomCommonEvent
 from .rootElement import GedcomRootElement
 
@@ -53,7 +54,7 @@ class GedcomIndividual(GedcomRootElement):
         :return: The last name of the individual.
         :rtype: str
         """
-        return self.__export_name.split("/")[-2].strip()
+        return self.__export_name.split("/")[-2].strip() if self.__export_name else ""
 
     def __init_birth(self) -> GedcomCommonEvent:
         """Initialize the birth of the individual.
@@ -158,6 +159,34 @@ class GedcomIndividual(GedcomRootElement):
         :rtype: list
         """
         return self.__export_media
+
+    def set_first_name(self, first_name: str):
+        """Set the first name of the individual.
+
+        :param first_name: The first name of the individual.
+        :type first_name: str
+        """
+        self.__export_first_name = first_name
+        self.__export_name = f"{first_name} /{self.__export_last_name}/"
+        name_element = self.find_sub_element("NAME")
+        if name_element != []:
+            name_element[0].set_value(self.__export_name)
+        else:
+            self.add_sub_element(2, "NAME", [], value=self.__export_name)
+
+    def set_last_name(self, last_name: str):
+        """Set the last name of the individual.
+
+        :param last_name: The last name of the individual.
+        :type last_name: str
+        """
+        self.__export_last_name = last_name
+        self.__export_name = f"{self.__export_first_name} /{last_name}/"
+        name_element = self.find_sub_element("NAME")
+        if name_element != []:
+            name_element[0].set_value(self.__export_name)
+        else:
+            self.add_sub_element(2, "NAME", [], value=self.__export_name)
 
     def __str__(self):
         """Get the string representation of the individual.
