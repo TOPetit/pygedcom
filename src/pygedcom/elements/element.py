@@ -170,7 +170,7 @@ class GedcomElement:
         :rtype: str
         """
         gedcom = [self.get_level()]
-        if hasattr(self, "get_xref"):
+        if hasattr(self, "get_xref") and self.get_xref():
             gedcom.append(self.get_xref())
         gedcom.append(self.get_tag())
         if self.get_value():
