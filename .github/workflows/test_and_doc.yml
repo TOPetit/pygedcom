@@ -24,7 +24,7 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest --html=build/tests/index.html --self-contained-html
+          pytest --html=build/tests/index.html --self-contained-html -vv
 
       - name: Generate documentation
         run: |
