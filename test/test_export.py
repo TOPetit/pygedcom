@@ -2,7 +2,7 @@ import json
 from ..src.pygedcom import gedcom_parser
 
 
-def test_export_00():
+def test_export_json_00():
     parser = gedcom_parser.GedcomParser("test/samples/00_simple_individual_record.ged")
     parser.parse()
     result = json.loads(parser.export())
@@ -17,7 +17,7 @@ def test_export_00():
     assert result["individuals"]["@I1@"]["death"]["date"]["year"] == "1970"
 
 
-def test_export_01():
+def test_export_json_01():
     parser = gedcom_parser.GedcomParser("test/samples/01_simple_family_record.ged")
     parser.parse()
     result = json.loads(parser.export())
@@ -29,7 +29,7 @@ def test_export_01():
     assert result["families"]["@F1@"]["marriage"]["date"]["year"] == "1925"
 
 
-def test_export_20():
+def test_export_json_20():
     parser = gedcom_parser.GedcomParser("test/samples/20_complex_sample.ged")
     parser.parse()
     result = json.loads(parser.export())
@@ -41,3 +41,26 @@ def test_export_20():
     assert result["individuals"]["@1@"]["death"]["date"]["day"] == "14"
     assert result["individuals"]["@1@"]["death"]["date"]["month"] == "APR"
     assert result["individuals"]["@1@"]["death"]["date"]["year"] == "1905"
+
+
+def test_export_gedcom_00():
+    parser = gedcom_parser.GedcomParser("test/samples/00_simple_individual_record.ged")
+    parser.parse()
+    result = parser.export(format="gedcom")
+    with open("test/samples/00_simple_individual_record.ged") as f:
+        assert result == f.read()
+
+
+def test_export_gedcom_01():
+    parser = gedcom_parser.GedcomParser("test/samples/01_simple_family_record.ged")
+    parser.parse()
+    result = parser.export(format="gedcom")
+    with open("test/samples/01_simple_family_record.ged") as f:
+        assert result == f.read()
+
+# def test_export_gedcom_20():
+#     parser = gedcom_parser.GedcomParser("test/samples/20_complex_sample.ged")
+#     parser.parse()
+#     result = parser.export(format="gedcom")
+#     with open("test/samples/20_complex_sample.ged") as f:
+#         assert result == f.read()
