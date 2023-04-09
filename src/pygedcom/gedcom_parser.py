@@ -31,6 +31,7 @@ class GedcomParser:
         self.sources = []
         self.objects = []
         self.repositories = []
+        self.isTRLR = False
 
     def __open(self) -> str:
         """Open the GEDCOM file and return the content.
@@ -143,6 +144,8 @@ class GedcomParser:
                     element_lines,
                 )
             )
+        elif parsed_line["tag"] == "TRLR":
+            self.isTRLR = True
 
     def parse(self) -> dict:
         """Parse the GEDCOM file and return a dictionary with the parsed elements
@@ -257,7 +260,7 @@ class GedcomParser:
                 content += object.extract_gedcom()
             for repository in self.repositories:
                 content += repository.extract_gedcom()
-            content += "0 TRLR\n"
+            content += "0 TRLR\n" if self.isTRLR else ""
             return content
 
     def get_parents(self, individual: GedcomIndividual) -> list:
