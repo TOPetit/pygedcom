@@ -15,18 +15,18 @@ pip install pygedcom
 
 ## Getting started
 
-First, you need to import the `gedcom_parser` module.
+First, you need to import the `pygedcom` module.
 
 ```python
 import pygedcom
 ```
 
 
-To get started with the `gedcom_parser` module, you'll need to initialize a `GedcomParser` object:
+To get started with the `parser` module, you'll need to initialize a `GedcomParser` object:
 
 
 ```python
-parser = gedcom_parser.GedcomParser(path="path/to/your/gedcom_file.ged")
+parser = pygedcom.GedcomParser(path="path/to/your/gedcom_file.ged")
 ```
 
 You can check the parsing statistics to ensure that you've parsed the file correctly:
