@@ -150,8 +150,56 @@ class GedcomFamily(GedcomRootElement):
         """
         return self.__export_media
 
+    def set_husband(self, xref: str):
+        """Set the husband of the family.
+
+        :param xref: The xref of the husband.
+        :type xref: str
+        """
+        self.__export_husband = xref
+        husband_element = self.find_sub_element("HUSB")
+        if husband_element != []:
+            husband_element[0].set_value(self.__export_husband)
+        else:
+            self.add_sub_element(1, "HUSB", [], value=self.__export_husband)
+
+    def set_wife(self, xref: str):
+        """Set the wife of the family.
+
+        :param xref: The xref of the wife.
+        :type xref: str
+        """
+        self.__export_wife = xref
+        wife_element = self.find_sub_element("WIFE")
+        if wife_element != []:
+            wife_element[0].set_value(self.__export_wife)
+        else:
+            self.add_sub_element(1, "WIFE", [], value=self.__export_wife)
+
+    def set_children(self, children: list):
+        """Set the children of the family.
+
+        :param children: The xrefs of the children.
+        :type children: list
+        """
+        self.__export_children = children
+        for child in self.find_sub_element("CHIL"):
+            self.remove_sub_element(child)
+        for child in self.__export_children:
+            self.add_sub_element(1, "CHIL", [], value=child)
+
+    def add_child(self, child_xref: str):
+        """Add a child to the family. If child already exists, do nothing.
+
+        :param child_xref: The xref of the child to add.
+        :type child_xref: str
+        """
+        if child_xref not in self.__export_children:
+            self.__export_children.append(child_xref)
+            self.add_sub_element(1, "CHIL", [], value=child_xref)
+
     def remove_child(self, child_xref: str):
-        """Remove a child from the family.
+        """Remove a child from the family. If child does not exist, do nothing.
 
         :param child_xref: The xref of the child to remove.
         :type child_xref: str
@@ -164,7 +212,7 @@ class GedcomFamily(GedcomRootElement):
         ) if child_xref in self.__export_children else None
 
     def remove_parent(self, parent_xref: str):
-        """Remove a parent from the family.
+        """Remove a parent from the family. If parent does not exist, do nothing.
 
         :param parent_xref: The xref of the parent to remove.
         :type parent_xref: str

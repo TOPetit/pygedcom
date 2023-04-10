@@ -172,7 +172,7 @@ class GedcomIndividual(GedcomRootElement):
         if name_element != []:
             name_element[0].set_value(self.__export_name)
         else:
-            self.add_sub_element(2, "NAME", [], value=self.__export_name)
+            self.add_sub_element(1, "NAME", [], value=self.__export_name)
 
     def set_last_name(self, last_name: str):
         """Set the last name of the individual.
@@ -186,7 +186,18 @@ class GedcomIndividual(GedcomRootElement):
         if name_element != []:
             name_element[0].set_value(self.__export_name)
         else:
-            self.add_sub_element(2, "NAME", [], value=self.__export_name)
+            self.add_sub_element(1, "NAME", [], value=self.__export_name)
+
+    def remove_family(self, family_xref: str):
+        """Remove the family from the individual.
+
+        :param family_xref: The family xref to remove.
+        :type family_xref: str
+        """
+        for fam_tag in ["FAMC", "FAMS"]:
+            for fam in self.find_sub_element(fam_tag):
+                if fam.get_value() == family_xref:
+                    self.remove_sub_element(fam)
 
     def __str__(self):
         """Get the string representation of the individual.

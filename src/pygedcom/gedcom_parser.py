@@ -436,20 +436,30 @@ class GedcomParser:
     def add_family(self, family: GedcomFamily):
         """Add a family to the collection.
 
+        This checks :
+            - if the family passed is of type GedcomFamily.
+            - if the family passed does not already exist (by xref).
+            - if every parent and child exists (their xref are in the individual collection).
+
+
         :param family: The family to add.
         :type family: GedcomFamily
         :raises KeyError: If the family already exists.
         :raises TypeError: If the family is not of type GedcomFamily.
         """
+        if self.find_individual(family.get_husband()) is None:
+            raise KeyError("Husband with xref " + family.get_husband() + " not found.")
+        if self.find_individual(family.get_wife()) is None:
+            raise KeyError("Wife with xref " + family.get_wife() + " not found.")
+        for child in family.get_children():
+            if self.find_individual(child) is None:
+                raise KeyError("Child with xref " + child + " not found.")
         if not isinstance(family, GedcomFamily):
             raise TypeError("Family must be of type GedcomFamily.")
         try:
             self.__add_root_element(self.families, family)
         except KeyError:
-            raise KeyError(
-                "Family with xref " + family.get_xref() + " already exists."
-            )
-        self.families.append(family)
+            raise KeyError("Family with xref " + family.get_xref() + " already exists.")
 
     def add_source(self, source: GedcomSource):
         """Add a source to the collection.
@@ -464,9 +474,7 @@ class GedcomParser:
         try:
             self.__add_root_element(self.sources, source)
         except KeyError:
-            raise KeyError(
-                "Source with xref " + source.get_xref() + " already exists."
-            )
+            raise KeyError("Source with xref " + source.get_xref() + " already exists.")
         self.sources.append(source)
 
     def add_object(self, object: GedcomObject):
@@ -482,9 +490,7 @@ class GedcomParser:
         try:
             self.__add_root_element(self.objects, object)
         except KeyError:
-            raise KeyError(
-                "Object with xref " + object.get_xref() + " already exists."
-            )
+            raise KeyError("Object with xref " + object.get_xref() + " already exists.")
         self.objects.append(object)
 
     def add_repository(self, repository: GedcomRepository):
@@ -520,7 +526,7 @@ class GedcomParser:
         collection.remove(element)
 
     def remove_individual(self, xref: str):
-        """Remove an individual from the collection.
+        """Remove an individual from the collection and all mentions of it in families.
 
         :param xref: The xref of the individual to remove.
         :type xref: str
@@ -538,3 +544,22 @@ class GedcomParser:
             family.remove_child(xref)
 
         self.__remove_root_element(self.individuals, xref)
+
+    def remove_family(self, xref: str):
+        """Remove a family from the collection.
+
+        :param xref: The xref of the family to remove.
+        :type xref: str
+        :raises KeyError: If the family does not exist.
+        """
+        try:
+            family = self.find_family(xref)
+        except KeyError:
+            raise KeyError("Family with xref " + xref + " does not exist.")
+
+        xref = family.get_xref()
+
+        for individual in self.individuals:
+            individual.remove_family(xref)
+
+        self.__remove_root_element(self.families, xref)

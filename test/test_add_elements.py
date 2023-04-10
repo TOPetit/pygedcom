@@ -1,4 +1,6 @@
 import json
+
+from ..src.pygedcom.elements.rootElements.family import GedcomFamily
 from ..src.pygedcom import gedcom_parser
 from ..src.pygedcom.elements.rootElements.individual import GedcomIndividual
 
@@ -27,3 +29,24 @@ def test_add_individual():
     assert result["individuals"]["@I2@"]["name"] == "John /Wick/"
     assert result["individuals"]["@I2@"]["first_name"] == "John"
     assert result["individuals"]["@I2@"]["last_name"] == "Wick"
+
+
+def test_add_family():
+    parser = gedcom_parser.GedcomParser("test/samples/01_simple_family_record.ged")
+    parser.parse()
+    current_len = len(parser.families)
+    newFamily = GedcomFamily(0, "@F2@", "FAM", [])
+    newFamily.set_husband("@I1@")
+    newFamily.set_wife("@I2@")
+    parser.add_family(newFamily)
+    assert len(parser.families) == current_len + 1
+    assert parser.families[1].get_xref() == "@F2@"
+    assert parser.families[1].get_husband() == "@I1@"
+    assert parser.families[1].get_wife() == "@I2@"
+    result = json.loads(parser.export())
+    assert result["families"]["@F1@"]["husband"] == "@I1@"
+    assert result["families"]["@F1@"]["wife"] == "@I2@"
+    assert result["families"]["@F1@"]["children"] == ["@I3@"]
+    assert result["families"]["@F2@"]["husband"] == "@I1@"
+    assert result["families"]["@F2@"]["wife"] == "@I2@"
+    assert result["families"]["@F2@"]["children"] == ""
