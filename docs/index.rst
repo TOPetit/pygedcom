@@ -8,7 +8,7 @@ Welcome to pygedcom's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Introduction:
+   :caption: Introduction
 
    ./sources/getting_started.rst
    ./sources/parsing.rst
