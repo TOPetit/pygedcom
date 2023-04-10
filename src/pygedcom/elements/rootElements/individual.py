@@ -188,6 +188,19 @@ class GedcomIndividual(GedcomRootElement):
         else:
             self.add_sub_element(1, "NAME", [], value=self.__export_name)
 
+    def set_sex(self, sex_value: str):
+        """Set the sex of the individual. This is not changing family relations.
+
+        :param sex_value: The sex value of the individual.
+        :type sex_value: str
+        """
+        self.__export_sex = sex_value
+        sex_element = self.find_sub_element("SEX")
+        if sex_element != []:
+            sex_element[0].set_value(self.__export_sex)
+        else:
+            self.add_sub_element(1, "SEX", [], value=self.__export_sex)
+
     def remove_family(self, family_xref: str):
         """Remove the family from the individual.
 
