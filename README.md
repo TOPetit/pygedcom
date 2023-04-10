@@ -77,9 +77,11 @@ The parser is a simple recursive parser. It creates a series of `GedcomElement` 
 
 Now the `data` object contains the parsed data. This is a dictionary with the following fields:
 - **head**: the `GedcomHead` object.
+- **submitters**: a list of `GedcomSubmitter` objects.
 - **individuals**: a list of `GedcomIndividual` objects.
 - **families**: a list of `GedcomFamily` objects.
 - **objects**: a list of `GedcomObject` objects.
+- **notes**: a list of `GedcomNote` objects.
 - **repository**: a list of `GedcomRepository` objects.
 - **source**: a list of `GedcomSource` objects.
 
