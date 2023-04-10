@@ -10,7 +10,6 @@ from .elements.rootElements.source import GedcomSource
 from .elements.rootElements.submitter import GedcomSubmitter
 from .elements.rootElements.note import GedcomNote
 from .elements.element import GedcomElement
-from .Exception import FormatException, DuplicateException, NotFoundException
 
 
 class GedcomParser:
@@ -228,9 +227,10 @@ class GedcomParser:
         :type empty_fields: bool
         :return: The exported file's content.
         :rtype: str
+        :raises ValueError: If the format is not supported.
         """
         if format not in ["json", "gedcom"]:
-            raise FormatException("Format " + format + " is not supported.")
+            raise ValueError("Format " + format + " is not supported.")
         if format == "json":
             export = {}
             if empty_fields or self.head:
@@ -346,7 +346,7 @@ class GedcomParser:
         for element in collection:
             if element.get_xref() == xref:
                 return element
-        raise NotFoundException("Element with xref " + xref + " not found.")
+        raise KeyError("Element with xref " + xref + " not found.")
 
     def find_individual(self, xref: str) -> GedcomIndividual:
         """Find an individual by its xref.
@@ -405,14 +405,14 @@ class GedcomParser:
         :type collection: list
         :param element: The element to add.
         :type element: GedcomRootElement
-        :raises DuplicateException: If the element already exists.
+        :raises KeyError: If the element already exists.
         """
         try:
             self.__find_root_element(collection, element.get_xref())
-        except NotFoundException:
+        except KeyError:
             collection.append(element)
         else:
-            raise DuplicateException(
+            raise KeyError(
                 "Element with xref " + element.get_xref() + " already exists."
             )
 
@@ -421,15 +421,15 @@ class GedcomParser:
 
         :param individual: The individual to add.
         :type individual: GedcomIndividual
-        :raises DuplicateException: If the individual already exists.
+        :raises KeyError: If the individual already exists.
         :raises TypeError: If the individual is not of type GedcomIndividual.
         """
         if not isinstance(individual, GedcomIndividual):
             raise TypeError("Individual must be of type GedcomIndividual.")
         try:
             self.__add_root_element(self.individuals, individual)
-        except DuplicateException:
-            raise DuplicateException(
+        except KeyError:
+            raise KeyError(
                 "Individual with xref " + individual.get_xref() + " already exists."
             )
 
@@ -438,15 +438,15 @@ class GedcomParser:
 
         :param family: The family to add.
         :type family: GedcomFamily
-        :raises DuplicateException: If the family already exists.
+        :raises KeyError: If the family already exists.
         :raises TypeError: If the family is not of type GedcomFamily.
         """
         if not isinstance(family, GedcomFamily):
             raise TypeError("Family must be of type GedcomFamily.")
         try:
             self.__add_root_element(self.families, family)
-        except DuplicateException:
-            raise DuplicateException(
+        except KeyError:
+            raise KeyError(
                 "Family with xref " + family.get_xref() + " already exists."
             )
         self.families.append(family)
@@ -456,15 +456,15 @@ class GedcomParser:
 
         :param source: The source to add.
         :type source: GedcomSource
-        :raises DuplicateException: If the source already exists.
+        :raises KeyError: If the source already exists.
         :raises TypeError: If the source is not of type GedcomSource.
         """
         if not isinstance(source, GedcomSource):
             raise TypeError("Source must be of type GedcomSource.")
         try:
             self.__add_root_element(self.sources, source)
-        except DuplicateException:
-            raise DuplicateException(
+        except KeyError:
+            raise KeyError(
                 "Source with xref " + source.get_xref() + " already exists."
             )
         self.sources.append(source)
@@ -474,15 +474,15 @@ class GedcomParser:
 
         :param object: The object to add.
         :type object: GedcomObject
-        :raises DuplicateException: If the object already exists.
+        :raises KeyError: If the object already exists.
         :raises TypeError: If the object is not of type GedcomObject.
         """
         if not isinstance(object, GedcomObject):
             raise TypeError("Object must be of type GedcomObject.")
         try:
             self.__add_root_element(self.objects, object)
-        except DuplicateException:
-            raise DuplicateException(
+        except KeyError:
+            raise KeyError(
                 "Object with xref " + object.get_xref() + " already exists."
             )
         self.objects.append(object)
@@ -492,15 +492,15 @@ class GedcomParser:
 
         :param repository: The repository to add.
         :type repository: GedcomRepository
-        :raises DuplicateException: If the repository already exists.
+        :raises KeyError: If the repository already exists.
         :raises TypeError: If the repository is not of type GedcomRepository.
         """
         if not isinstance(repository, GedcomRepository):
             raise TypeError("Repository must be of type GedcomRepository.")
         try:
             self.__add_root_element(self.repositories, repository)
-        except DuplicateException:
-            raise DuplicateException(
+        except KeyError:
+            raise KeyError(
                 "Repository with xref " + repository.get_xref() + " already exists."
             )
         self.repositories.append(repository)
@@ -512,11 +512,11 @@ class GedcomParser:
         :type collection: list
         :param xref: The xref of the element to remove.
         :type xref: str
-        :raises NotFoundException: If the element does not exist.
+        :raises KeyError: If the element does not exist.
         """
         element = self.__find_root_element(collection, xref)
         if not element:
-            raise NotFoundException()
+            raise KeyError()
         collection.remove(element)
 
     def remove_individual(self, xref: str):
@@ -524,12 +524,12 @@ class GedcomParser:
 
         :param xref: The xref of the individual to remove.
         :type xref: str
-        :raises NotFoundException: If the individual does not exist.
+        :raises KeyError: If the individual does not exist.
         """
         try:
             individual = self.find_individual(xref)
-        except NotFoundException:
-            raise NotFoundException("Individual with xref " + xref + " does not exist.")
+        except KeyError:
+            raise KeyError("Individual with xref " + xref + " does not exist.")
 
         xref = individual.get_xref()
 
