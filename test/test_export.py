@@ -51,6 +51,57 @@ def test_export_json_20():
     assert result["families"]["@F0001@"]["children"] == ["@I0003@"]
 
 
+def test_export_json_empty_fields_20():
+    parser = gedcom_parser.GedcomParser("test/samples/20_complex_sample.ged")
+    parser.parse()
+    result = json.loads(parser.export())
+    john = result["individuals"]["@I0001@"]
+    assert "birth" in john
+    assert "death" in john
+    assert "name" in john
+    assert "first_name" in john
+    assert "last_name" in john
+    assert "sex" in john
+    assert "media" in john
+    assert "date" in john["birth"]
+    assert "day" in john["birth"]["date"]
+    assert "month" in john["birth"]["date"]
+    assert "year" in john["birth"]["date"]
+    assert "place" in john["birth"]
+    assert "map" in john["birth"]["place"]
+    assert "latitude" in john["birth"]["place"]["map"]
+    assert "longitude" in john["birth"]["place"]["map"]
+    assert "place_infos" in john["birth"]["place"]
+    assert "date" in john["death"]
+    assert "day" in john["death"]["date"]
+    assert "month" in john["death"]["date"]
+    assert "year" in john["death"]["date"]
+    assert "place" in john["death"]
+    assert "map" in john["death"]["place"]
+    assert "latitude" in john["death"]["place"]["map"]
+    assert "longitude" in john["death"]["place"]["map"]
+    assert "place_infos" in john["death"]["place"]
+
+
+def test_export_json_no_empty_fields_20():
+    parser = gedcom_parser.GedcomParser("test/samples/20_complex_sample.ged")
+    parser.parse()
+    result = json.loads(parser.export(empty_fields=False))
+    john = result["individuals"]["@I0001@"]
+    assert "birth" in john
+    assert "death" not in john
+    assert "name" in john
+    assert "first_name" in john
+    assert "last_name" in john
+    assert "date" in john["birth"]
+    assert "day" in john["birth"]["date"]
+    assert "month" in john["birth"]["date"]
+    assert "year" in john["birth"]["date"]
+    assert "place" in john["birth"]
+    assert "map" not in john["birth"]["place"]
+    assert "place_infos" in john["birth"]["place"]
+
+
 def test_export_gedcom_00():
     parser = gedcom_parser.GedcomParser("test/samples/00_simple_individual_record.ged")
     parser.parse()

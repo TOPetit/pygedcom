@@ -41,7 +41,7 @@ class GedcomMap(GedcomElement):
         latitude = self.find_sub_element("LATI")
         if latitude != []:
             return latitude[0].get_value()
-        return None
+        return ""
 
     def __find_longitude(self) -> str:
         """Find the longitude of the Gedcom map element.
@@ -52,7 +52,7 @@ class GedcomMap(GedcomElement):
         longitude = self.find_sub_element("LONG")
         if longitude != []:
             return longitude[0].get_value()
-        return None
+        return ""
 
     def get_latitude(self) -> str:
         """Get the latitude of the Gedcom map element.
@@ -69,6 +69,15 @@ class GedcomMap(GedcomElement):
         :rtype: str
         """
         return self.__export_longitude
+
+    @classmethod
+    def empty(cls):
+        """Return an empty Gedcom map element.
+
+        :return: An empty Gedcom map element.
+        :rtype: GedcomMap
+        """
+        return cls(0, "MAP", [])
 
     def __str__(self) -> str:
         """Get the string representation of the Gedcom map element.

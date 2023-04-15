@@ -45,7 +45,7 @@ class GedcomPlace(GedcomElement):
             map.__class__ = GedcomMap
             map.init_properties()
             return map
-        return None
+        return GedcomMap.empty()
 
     def __parse_value(self) -> list:
         """Parse the value of the place.
@@ -53,7 +53,7 @@ class GedcomPlace(GedcomElement):
         :return: The parsed value of the place.
         :rtype: list
         """
-        return self.get_value().split(",")
+        return self.get_value().split(",") if self.get_value() != "" else []
 
     def get_export_place_infos(self) -> list:
         """Return the place infos.
@@ -70,6 +70,15 @@ class GedcomPlace(GedcomElement):
         :rtype: GedcomMap
         """
         return self.__export_map
+
+    @classmethod
+    def empty(cls):
+        """Return an empty place.
+
+        :return: An empty place.
+        :rtype: GedcomPlace
+        """
+        return cls(0, "", [], value="")
 
     def __str__(self) -> str:
         """Return the string representation of the place.

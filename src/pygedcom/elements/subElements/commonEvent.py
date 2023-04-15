@@ -47,7 +47,7 @@ class GedcomCommonEvent(GedcomElement):
             place.init_properties()
             return place
         else:
-            return None
+            return GedcomPlace.empty()
 
     def __find_date(self) -> GedcomDate:
         """Find the date of the common event.
@@ -61,7 +61,7 @@ class GedcomCommonEvent(GedcomElement):
             date.init_properties()
             return date
         else:
-            return None
+            return GedcomDate.empty()
 
     def __find_media(self) -> list:
         """Find the media of the common event.
@@ -94,6 +94,15 @@ class GedcomCommonEvent(GedcomElement):
         :rtype: list
         """
         return self.__export_media
+
+    @classmethod
+    def empty(cls):
+        """Return an empty common event.
+
+        :return: An empty common event.
+        :rtype: GedcomCommonEvent
+        """
+        return cls(0, "", [])
 
     def __str__(self):
         """Return the string representation of the common event.

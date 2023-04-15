@@ -225,6 +225,28 @@ class GedcomParser:
             "repositories": len(self.repositories),
         }
 
+    # define a helper function that recursively checks if a dictionary has only empty fields
+    def __is_empty(self, d):
+        """Check if a dictionary has only empty fields."""
+        for v in d.values():
+            if isinstance(v, dict):
+                if not self.__is_empty(v):
+                    return False
+            elif v:
+                return False
+        return True
+
+    # define a helper function that recursively removes empty fields
+    def __remove_empty(self, d):
+        """Remove empty fields from a dictionary."""
+        for k in list(d.keys()):
+            if isinstance(d[k], dict):
+                self.__remove_empty(d[k])
+                if self.__is_empty(d[k]):
+                    del d[k]
+            elif not d[k]:
+                del d[k]
+
     def export(self, format: str = "json", empty_fields=True) -> str:
         """Export the GEDCOM file to another format.
 
@@ -241,51 +263,38 @@ class GedcomParser:
         if format == "json":
             export = {}
             if empty_fields or self.head:
-                export["head"] = (
-                    self.head.export(empty_fields=empty_fields) if self.head else ""
-                )
+                export["head"] = self.head.export() if self.head else ""
             if empty_fields or self.submitters:
                 export["submitters"] = {}
                 for submitter in self.submitters:
-                    export["submitters"][submitter.get_xref()] = submitter.export(
-                        empty_fields=empty_fields
-                    )
+                    export["submitters"][submitter.get_xref()] = submitter.export()
             if empty_fields or self.individuals:
                 export["individuals"] = {}
                 for individual in self.individuals:
-                    export["individuals"][individual.get_xref()] = individual.export(
-                        empty_fields=empty_fields
-                    )
+                    export["individuals"][individual.get_xref()] = individual.export()
             if empty_fields or self.families:
                 export["families"] = {}
                 for family in self.families:
-                    export["families"][family.get_xref()] = family.export(
-                        empty_fields=empty_fields
-                    )
+                    export["families"][family.get_xref()] = family.export()
             if empty_fields or self.objects:
                 export["objects"] = {}
                 for object in self.objects:
-                    export["objects"][object.get_xref()] = object.export(
-                        empty_fields=empty_fields
-                    )
+                    export["objects"][object.get_xref()] = object.export()
             if empty_fields or self.notes:
                 export["notes"] = {}
                 for note in self.notes:
-                    export["notes"][note.get_xref()] = note.export(
-                        empty_fields=empty_fields
-                    )
+                    export["notes"][note.get_xref()] = note.export()
             if empty_fields or self.repositories:
                 export["repositories"] = {}
                 for repository in self.repositories:
-                    export["repositories"][repository.get_xref()] = repository.export(
-                        empty_fields=empty_fields
-                    )
+                    export["repositories"][repository.get_xref()] = repository.export()
             if empty_fields or self.sources:
                 export["sources"] = {}
                 for source in self.sources:
-                    export["sources"][source.get_xref()] = source.export(
-                        empty_fields=empty_fields
-                    )
+                    export["sources"][source.get_xref()] = source.export()
+
+            if not empty_fields:
+                self.__remove_empty(export)
             return json.dumps(export, indent=4, ensure_ascii=False)
         if format == "gedcom":
             content = ""

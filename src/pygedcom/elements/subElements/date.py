@@ -129,7 +129,7 @@ class GedcomDate(GedcomElement):
         :return: The day, month and year of the Gedcom date element.
         :rtype: tuple
         """
-        day = month = year = None
+        day = month = year = ""
         date_string = date_string.strip()
 
         # Match DD MMM YYYY format
@@ -151,6 +151,15 @@ class GedcomDate(GedcomElement):
                 (year,) = match.groups()
 
         return day, month, year
+
+    @classmethod
+    def empty(cls):
+        """Return an empty Gedcom date element.
+
+        :return: An empty Gedcom date element.
+        :rtype: GedcomDate
+        """
+        return cls(0, "", [], value="")
 
     def __str__(self):
         """Return the string representation of the Gedcom date element.

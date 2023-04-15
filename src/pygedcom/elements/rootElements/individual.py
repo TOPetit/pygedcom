@@ -1,4 +1,3 @@
-from ...elements.element import GedcomElement
 from ..subElements.commonEvent import GedcomCommonEvent
 from .rootElement import GedcomRootElement
 
@@ -68,7 +67,7 @@ class GedcomIndividual(GedcomRootElement):
             birth.init_properties()
             return birth
         else:
-            return None
+            return GedcomCommonEvent.empty()
 
     def __init_death(self) -> GedcomCommonEvent:
         """Initialize the death of the individual.
@@ -82,7 +81,7 @@ class GedcomIndividual(GedcomRootElement):
             death.init_properties()
             return death
         else:
-            return None
+            return GedcomCommonEvent.empty()
 
     def __find_sex(self):
         """Find the sex of the individual.
@@ -93,7 +92,7 @@ class GedcomIndividual(GedcomRootElement):
         return (
             self.find_sub_element("SEX")[0].get_value()
             if self.find_sub_element("SEX") != []
-            else None
+            else ""
         )
 
     def __find_media(self) -> list:
