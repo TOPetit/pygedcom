@@ -49,4 +49,4 @@ def test_add_family():
     assert result["families"]["@F1@"]["children"] == ["@I3@"]
     assert result["families"]["@F2@"]["husband"] == "@I1@"
     assert result["families"]["@F2@"]["wife"] == "@I2@"
-    assert result["families"]["@F2@"]["children"] == ""
+    assert result["families"]["@F2@"]["children"] == []

@@ -207,5 +207,5 @@ class GedcomElement:
                 elif not export_value and not empty_fields:
                     pass
                 else:
-                    export_dict[export_key] = export_value if export_value else ""
+                    export_dict[export_key] = export_value
         return export_dict

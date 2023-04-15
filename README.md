@@ -40,12 +40,12 @@ It's a good practice to verify your GEDCOM file before parsing it. You can do th
 
 
 ```python
-verif = parser.verify()
-if verif.status == 'ok':
+check = parser.verify()
+if check.status == 'ok':
     print("Your GEDCOM file is valid")
 else:
     print("Your GEDCOM file is not valid")
-    print(verif.errors)
+    print(check.errors)
 ```
 
 Here is the full setup block:
@@ -54,13 +54,13 @@ Here is the full setup block:
 import pygedcom
 
 parser = pygedcom.GedcomParser(path="path/to/your/gedcom_file.ged")
-verif = parser.verify()
+check = parser.verify()
 
-if verif.status == 'ok':
+if check.status == 'ok':
     print("Your GEDCOM file is valid")
 else:
     print("Your GEDCOM file is not valid")
-    print(verif.errors)
+    print(check.errors)
 
 print(parser.get_stats())
 ```
