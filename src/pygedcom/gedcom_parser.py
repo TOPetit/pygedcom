@@ -175,10 +175,12 @@ class GedcomParser:
         :rtype: dict
         """
         self.head = None
+        self.submitters = []
         self.individuals = []
         self.families = []
         self.sources = []
         self.objects = []
+        self.notes = []
         self.repositories = []
         file = self.__open()
         lines = file.split("\n")
@@ -196,10 +198,13 @@ class GedcomParser:
                         element_lines = []
             self.__create_element(current_parsed_line, element_lines)
         return {
+            "head": self.head,
             "individuals": self.individuals,
+            "submitters": self.submitters,
             "families": self.families,
             "sources": self.sources,
             "objects": self.objects,
+            "notes": self.notes,
             "repositories": self.repositories,
         }
 
@@ -211,10 +216,12 @@ class GedcomParser:
         """
         return {
             "head": "OK" if self.head is not None else "None",
+            "submitters": len(self.submitters),
             "individuals": len(self.individuals),
             "families": len(self.families),
             "sources": len(self.sources),
             "objects": len(self.objects),
+            "notes": len(self.notes),
             "repositories": len(self.repositories),
         }
 
