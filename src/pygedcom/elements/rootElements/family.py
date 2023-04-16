@@ -39,7 +39,7 @@ class GedcomFamily(GedcomRootElement):
             marriage.init_properties()
             return marriage
         else:
-            return None
+            return GedcomCommonEvent.empty()
 
     def __find_husband(self) -> str:
         """Find the husband of the family.
