@@ -36,7 +36,7 @@ You can check the parsing statistics to ensure that you've parsed the file corre
 print(parser.get_stats())
 ```
 
-It's a good practice to verify your GEDCOM file before parsing it. You can do this with the following command:
+It's good practice to verify your GEDCOM file before parsing it. You can do this with the following command:
 
 
 ```python
