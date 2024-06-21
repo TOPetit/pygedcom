@@ -89,11 +89,7 @@ class GedcomIndividual(GedcomRootElement):
         :return: The sex of the individual.
         :rtype: str
         """
-        return (
-            self.find_sub_element("SEX")[0].get_value()
-            if self.find_sub_element("SEX") != []
-            else ""
-        )
+        return self.find_sub_element("SEX")[0].get_value() if self.find_sub_element("SEX") != [] else ""
 
     def __find_media(self) -> list:
         """Find media of the individual.

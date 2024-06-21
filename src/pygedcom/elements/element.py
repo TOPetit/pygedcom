@@ -146,14 +146,7 @@ class GedcomElement:
         :return: The string representation of the Gedcom element.
         :rtype: str
         """
-        return (
-            "Level: "
-            + str(self.__level)
-            + ", Tag: "
-            + str(self.__tag)
-            + ", Value: "
-            + str(self.__value)
-        )
+        return "Level: " + str(self.__level) + ", Tag: " + str(self.__tag) + ", Value: " + str(self.__value)
 
     def __repr__(self) -> str:
         """Get the string representation of the Gedcom element.

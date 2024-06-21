@@ -86,10 +86,7 @@ class GedcomParser:
                 if parsed_line["level"] > current_level + 1:
                     return {
                         "status": "error",
-                        "message": "Invalid level on line "
-                        + str(current_line)
-                        + ": "
-                        + line,
+                        "message": "Invalid level on line " + str(current_line) + ": " + line,
                     }
                 current_level = parsed_line["level"]
         return {"status": "ok", "message": ""}
@@ -435,9 +432,7 @@ class GedcomParser:
         except KeyError:
             collection.append(element)
         else:
-            raise KeyError(
-                "Element with xref " + element.get_xref() + " already exists."
-            )
+            raise KeyError("Element with xref " + element.get_xref() + " already exists.")
 
     def add_individual(self, individual: GedcomIndividual):
         """Add an individual to the collection.
@@ -452,9 +447,7 @@ class GedcomParser:
         try:
             self.__add_root_element(self.individuals, individual)
         except KeyError:
-            raise KeyError(
-                "Individual with xref " + individual.get_xref() + " already exists."
-            )
+            raise KeyError("Individual with xref " + individual.get_xref() + " already exists.")
 
     def add_family(self, family: GedcomFamily):
         """Add a family to the collection.
@@ -529,9 +522,7 @@ class GedcomParser:
         try:
             self.__add_root_element(self.repositories, repository)
         except KeyError:
-            raise KeyError(
-                "Repository with xref " + repository.get_xref() + " already exists."
-            )
+            raise KeyError("Repository with xref " + repository.get_xref() + " already exists.")
         self.repositories.append(repository)
 
     def __remove_root_element(self, collection: list, xref: str):

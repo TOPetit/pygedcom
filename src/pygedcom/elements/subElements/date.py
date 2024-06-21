@@ -175,11 +175,7 @@ class GedcomDate(GedcomElement):
         if self.__export_year:
             results.append(self.__export_year)
 
-        if (
-            hasattr(self, "__export_day1")
-            or hasattr(self, "__export_month1")
-            or hasattr(self, "__export_year1")
-        ):
+        if hasattr(self, "__export_day1") or hasattr(self, "__export_month1") or hasattr(self, "__export_year1"):
             results.append("AND")
         if hasattr(self, "__export_day1"):
             results.append(self.__export_day1)

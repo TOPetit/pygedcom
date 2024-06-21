@@ -81,9 +81,7 @@ class GedcomFamily(GedcomRootElement):
         :rtype: bool
         """
         return self.find_sub_element("MARR") != [] or (
-            self.find_sub_element("_UST")[0].get_value() == "MARRIED"
-            if self.find_sub_element("_UST") != []
-            else False
+            self.find_sub_element("_UST")[0].get_value() == "MARRIED" if self.find_sub_element("_UST") != [] else False
         )
 
     def __find_media(self) -> list:
@@ -207,9 +205,7 @@ class GedcomFamily(GedcomRootElement):
         for child in self.find_sub_element("CHIL"):
             if child.get_value() == child_xref:
                 self.remove_sub_element(child)
-        self.__export_children.remove(
-            child_xref
-        ) if child_xref in self.__export_children else None
+        self.__export_children.remove(child_xref) if child_xref in self.__export_children else None
 
     def remove_parent(self, parent_xref: str):
         """Remove a parent from the family. If parent does not exist, do nothing.
