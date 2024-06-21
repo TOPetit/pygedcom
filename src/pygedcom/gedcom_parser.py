@@ -42,9 +42,16 @@ class GedcomParser:
         :return: The content of the GEDCOM file.
         :rtype: str
         """
-        with open(self.path, "r") as file:
-            data = file.read()
-        return data
+        supported_encodings = ["utf-8", "utf-16", "latin1", "ansi"]
+        for encoding in supported_encodings:
+            try:
+                with open(self.path, "r", encoding=encoding) as file:
+                    return file.read()
+            except UnicodeDecodeError:
+                continue
+        raise ValueError(
+            f"Could not open file {self.path} with supported encodings ({', '.join(supported_encodings)})."
+        )
 
     def __parse_line(self, line: str) -> dict:
         """Parse a line of a GEDCOM file.
